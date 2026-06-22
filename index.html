@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RLS Methods Training Quiz</title>
+<style>
+  :root {
+    --ocean-deep: #042C53;
+    --ocean-mid: #185FA5;
+    --ocean-light: #E6F1FB;
+    --ocean-bright: #378ADD;
+    --teal-dark: #085041;
+    --teal-mid: #0F6E56;
+    --teal-light: #E1F5EE;
+    --teal-accent: #1D9E75;
+    --coral: #D85A30;
+    --coral-light: #FAECE7;
+    --amber: #BA7517;
+    --amber-light: #FAEEDA;
+    --success: #3B6D11;
+    --success-light: #EAF3DE;
+    --danger: #A32D2D;
+    --danger-light: #FCEBEB;
+    --text-primary: #1a1a1a;
+    --text-secondary: #555;
+    --text-muted: #888;
+    --border: #d0d0d0;
+    --border-light: #e8e8e8;
+    --bg: #ffffff;
+    --bg-secondary: #f7f9fc;
+    --bg-tertiary: #f0f3f7;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--ocean-deep);
+    color: #fff;
+    padding: 0;
+  }
+  .header-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  .rls-logo {
+    width: 64px;
+    height: 64px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .header-text h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .header-text p {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
+    margin-top: 0.4rem;
+  }
+  .progress-bar-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 1.5rem 1.25rem;
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 6px;
+  }
+  .progress-track {
+    height: 5px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--teal-accent);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+
+  /* ── MODULE TABS ── */
+  .module-nav {
+    background: var(--ocean-mid);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .module-nav-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .module-nav-inner::-webkit-scrollbar { display: none; }
+  .mod-tab {
+    padding: 0.75rem 1.1rem;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.6);
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    font-weight: 500;
+    user-select: none;
+  }
+  .mod-tab.active { color: #fff; border-bottom-color: var(--teal-accent); }
+  .mod-tab.completed { color: rgba(255,255,255,0.8); }
+  .mod-tab.completed::after { content: ' ✓'; color: var(--teal-accent); }
+
+  /* ── MAIN ── */
+  .main-wrap {
+    max-width: 860px;
+    margin: 2rem auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  /* ── INTRO CARD ── */
+  .intro-card {
+    background: var(--bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-light);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .intro-card h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--ocean-deep);
+    margin-bottom: 0.5rem;
+  }
+  .intro-card p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .module-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 1rem;
+  }
+  .module-pill {
+    background: var(--ocean-light);
+    color: var(--ocean-deep);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  /* ── QUESTION CARDS ── */
+  .question-card {
+    background: var(--bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-light);
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+    transition: border-color 0.2s;
+  }
+  .question-card.answered { border-color: var(--border); }
+  .question-card.correct { border-left: 4px solid var(--teal-accent); }
+  .question-card.incorrect { border-left: 4px solid var(--coral); }
+
+  .q-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.1rem;
+  }
+  .q-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--ocean-light);
+    color: var(--ocean-deep);
+    font-size: 0.78rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .q-number.correct-num { background: var(--success-light); color: var(--success); }
+  .q-number.incorrect-num { background: var(--danger-light); color: var(--danger); }
+
+  .q-meta { flex: 1; }
+  .q-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ocean-mid);
+    background: var(--ocean-light);
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+  .q-tag.m1 { background: var(--ocean-light); color: var(--ocean-mid); }
+  .q-tag.m2 { background: var(--teal-light); color: var(--teal-dark); }
+  .q-tag.pq { background: var(--amber-light); color: var(--amber); }
+  .q-tag.site { background: #f3eeff; color: #4a35a0; }
+  .q-tag.data { background: #fef3e2; color: #92540a; }
+  .q-tag.safety { background: var(--coral-light); color: var(--coral); }
+
+  .q-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.55;
+  }
+
+  /* MC OPTIONS */
+  .options-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 1rem;
+  }
+  .option-btn {
+    width: 100%;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    color: var(--text-primary);
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.4;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--ocean-bright);
+    background: var(--ocean-light);
+  }
+  .option-btn.selected { border-color: var(--ocean-bright); background: var(--ocean-light); }
+  .option-btn.correct-ans { border-color: var(--teal-accent); background: var(--teal-light); color: var(--teal-dark); }
+  .option-btn.wrong-ans { border-color: var(--coral); background: var(--coral-light); color: var(--coral); }
+  .option-btn:disabled { cursor: default; }
+  .opt-letter {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    font-size: 0.72rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--text-secondary);
+  }
+  .option-btn.correct-ans .opt-letter { background: var(--teal-accent); border-color: var(--teal-accent); color: #fff; }
+  .option-btn.wrong-ans .opt-letter { background: var(--coral); border-color: var(--coral); color: #fff; }
+
+  /* SHORT ANSWER */
+  .short-answer-wrap { margin-top: 1rem; }
+  .short-answer-wrap textarea {
+    width: 100%;
+    min-height: 80px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    padding: 0.75rem;
+    font-size: 0.88rem;
+    font-family: inherit;
+    resize: vertical;
+    color: var(--text-primary);
+    background: var(--bg);
+    transition: border-color 0.2s;
+    line-height: 1.5;
+  }
+  .short-answer-wrap textarea:focus { outline: none; border-color: var(--ocean-bright); }
+  .short-answer-wrap textarea:disabled { background: var(--bg-secondary); }
+
+  /* FEEDBACK */
+  .feedback {
+    margin-top: 1rem;
+    padding: 0.9rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct-fb {
+    background: var(--success-light);
+    color: var(--success);
+    border: 1px solid #c0dd97;
+  }
+  .feedback.incorrect-fb {
+    background: var(--danger-light);
+    color: var(--danger);
+    border: 1px solid #f7c1c1;
+  }
+  .feedback.info-fb {
+    background: var(--ocean-light);
+    color: var(--ocean-deep);
+    border: 1px solid #b5d4f4;
+  }
+  .feedback strong { font-weight: 600; }
+  .feedback .model-answer {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+  }
+
+  /* SUBMIT BTN */
+  .submit-btn {
+    margin-top: 1rem;
+    padding: 0.6rem 1.25rem;
+    background: var(--ocean-mid);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .submit-btn:hover { background: var(--ocean-deep); }
+  .submit-btn:disabled { opacity: 0.5; cursor: default; }
+
+  /* ── MODULE NAV BUTTONS ── */
+  .module-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-light);
+  }
+  .nav-btn {
+    padding: 0.65rem 1.4rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    color: var(--text-primary);
+    transition: all 0.2s;
+  }
+  .nav-btn:hover { border-color: var(--ocean-mid); color: var(--ocean-mid); }
+  .nav-btn.primary {
+    background: var(--ocean-deep);
+    color: #fff;
+    border-color: var(--ocean-deep);
+  }
+  .nav-btn.primary:hover { background: var(--ocean-mid); border-color: var(--ocean-mid); }
+  .nav-btn:disabled { opacity: 0.4; cursor: default; pointer-events: none; }
+
+  .module-score {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    text-align: center;
+  }
+
+  /* ── RESULTS SCREEN ── */
+  .results-screen { display: none; }
+  .results-screen.show { display: block; }
+
+  .results-hero {
+    background: var(--ocean-deep);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 1.5rem;
+  }
+  .results-hero .score-ring {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 5px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+    position: relative;
+  }
+  .results-hero h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .results-hero p { color: rgba(255,255,255,0.75); font-size: 0.9rem; }
+
+  .module-breakdown {
+    background: var(--bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-light);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .module-breakdown h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ocean-deep);
+    margin-bottom: 1rem;
+  }
+  .breakdown-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.88rem;
+  }
+  .breakdown-row:last-child { border-bottom: none; }
+  .bd-name { flex: 1; font-weight: 500; }
+  .bd-bar-wrap { flex: 2; height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
+  .bd-bar { height: 100%; border-radius: 4px; background: var(--teal-accent); transition: width 0.6s ease; }
+  .bd-bar.low { background: var(--coral); }
+  .bd-bar.mid { background: var(--amber); }
+  .bd-score { font-weight: 600; color: var(--text-primary); min-width: 40px; text-align: right; font-size: 0.85rem; }
+
+  /* SUBMIT TO RLS */
+  .submit-results {
+    background: var(--bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-light);
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .submit-results h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ocean-deep);
+    margin-bottom: 0.4rem;
+  }
+  .submit-results p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.25rem;
+  }
+  .form-row { margin-bottom: 0.9rem; }
+  .form-row label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .form-row input, .form-row select {
+    width: 100%;
+    padding: 0.6rem 0.85rem;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    font-size: 0.88rem;
+    font-family: inherit;
+    color: var(--text-primary);
+    background: var(--bg);
+    transition: border-color 0.2s;
+  }
+  .form-row input:focus, .form-row select:focus { outline: none; border-color: var(--ocean-bright); }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .send-btn {
+    padding: 0.75rem 2rem;
+    background: var(--ocean-deep);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.2s;
+  }
+  .send-btn:hover { background: var(--ocean-mid); }
+
+  .submission-success {
+    display: none;
+    background: var(--teal-light);
+    border: 1px solid #9fe1cb;
+    border-radius: var(--radius-sm);
+    padding: 1rem 1.25rem;
+    font-size: 0.88rem;
+    color: var(--teal-dark);
+    margin-top: 1rem;
+  }
+  .submission-success.show { display: block; }
+
+  .retry-btn {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    color: var(--text-primary);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 0.75rem;
+  }
+  .retry-btn:hover { border-color: var(--ocean-mid); color: var(--ocean-mid); }
+
+  /* ── ADMIN PANEL ── */
+  .admin-toggle {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--ocean-deep);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .admin-panel {
+    display: none;
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 420px;
+    background: #fff;
+    border-left: 1px solid var(--border);
+    z-index: 200;
+    overflow-y: auto;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+  }
+  .admin-panel.open { display: block; }
+  .admin-header {
+    background: var(--ocean-deep);
+    color: #fff;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .admin-header h3 { font-size: 1rem; font-weight: 700; }
+  .admin-close {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.8);
+    font-size: 1.4rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .admin-body { padding: 1.5rem; }
+  .admin-section { margin-bottom: 2rem; }
+  .admin-section h4 {
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .admin-field { margin-bottom: 0.75rem; }
+  .admin-field label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 3px;
+  }
+  .admin-field input, .admin-field textarea {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    font-size: 0.83rem;
+    font-family: inherit;
+    color: var(--text-primary);
+  }
+  .admin-field textarea { min-height: 80px; resize: vertical; }
+  .admin-save {
+    padding: 0.55rem 1.1rem;
+    background: var(--teal-accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 0.5rem;
+  }
+  .submissions-list { font-size: 0.82rem; }
+  .submission-item {
+    padding: 0.75rem;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.5rem;
+    background: var(--bg-secondary);
+  }
+  .submission-item .si-name { font-weight: 600; color: var(--ocean-deep); }
+  .submission-item .si-meta { color: var(--text-secondary); font-size: 0.78rem; margin-top: 2px; }
+  .submission-item .si-score {
+    display: inline-block;
+    background: var(--ocean-light);
+    color: var(--ocean-deep);
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    margin-top: 6px;
+  }
+  .no-submissions { color: var(--text-muted); font-size: 0.85rem; font-style: italic; }
+  .export-btn {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: var(--bg);
+    color: var(--text-primary);
+    margin-top: 0.5rem;
+    transition: all 0.2s;
+  }
+  .export-btn:hover { border-color: var(--ocean-mid); color: var(--ocean-mid); }
+
+  .rls-hq-config { background: var(--bg-tertiary); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1rem; border: 1px solid var(--border-light); }
+  .rls-hq-config p { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; }
+  .rls-hq-config code { background: var(--bg); padding: 1px 5px; border-radius: 3px; font-family: monospace; font-size: 0.78rem; color: var(--ocean-deep); }
+
+  /* HIDDEN sections */
+  .module-section { display: none; }
+  .module-section.active { display: block; }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .header-inner { padding: 1.5rem 1rem 1rem; }
+    .header-text h1 { font-size: 1.3rem; }
+    .main-wrap { padding: 0 1rem 3rem; margin-top: 1.25rem; }
+    .form-grid { grid-template-columns: 1fr; }
+    .admin-panel { width: 100%; }
+    .module-nav-inner { padding: 0 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="rls-logo">🐠</div>
+    <div class="header-text">
+      <h1>RLS Methods Training Quiz</h1>
+      <p>Pre-dive certification assessment for volunteer surveyors · Reef Life Survey</p>
+    </div>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-meta">
+      <span id="progress-label">Module 1 of 5</span>
+      <span id="progress-pct">0% complete</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
+</header>
+
+<!-- MODULE TABS -->
+<nav class="module-nav">
+  <div class="module-nav-inner">
+    <div class="mod-tab active" onclick="goModule(0)" id="tab-0">1. Survey Basics</div>
+    <div class="mod-tab" onclick="goModule(1)" id="tab-1">2. Fish Survey (M1)</div>
+    <div class="mod-tab" onclick="goModule(2)" id="tab-2">3. Invertebrate Survey (M2)</div>
+    <div class="mod-tab" onclick="goModule(3)" id="tab-3">4. Photo-Quadrats & Data</div>
+    <div class="mod-tab" onclick="goModule(4)" id="tab-4">5. Special Circumstances</div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main-wrap">
+
+<!-- ═══════════════════════════════════════════════════════ MODULE 0 -->
+<section class="module-section active" id="mod-0">
+  <div class="intro-card">
+    <h2>Module 1: Survey Basics & Site Setup</h2>
+    <p>This module covers foundational RLS concepts — what each method measures, how sites are chosen and identified, equipment requirements, and what to do before entering the water.</p>
+    <div class="module-pills">
+      <span class="module-pill">How it works</span>
+      <span class="module-pill">Equipment</span>
+      <span class="module-pill">Site selection</span>
+      <span class="module-pill">GPS & site codes</span>
+      <span class="module-pill">Pre-dive safety</span>
+    </div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="question-card" id="qcard-0-0">
+    <div class="q-header">
+      <div class="q-number" id="qnum-0-0">1</div>
+      <div class="q-meta">
+        <span class="q-tag site">Site Setup</span>
+        <p class="q-text">What is the length of the standard RLS transect line?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,0,0,'A')"><span class="opt-letter">A</span>25 metres</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,0,'B')"><span class="opt-letter">B</span>50 metres</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,0,'C')"><span class="opt-letter">C</span>100 metres</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,0,'D')"><span class="opt-letter">D</span>It varies depending on reef size</button></li>
+    </ul>
+    <div class="feedback" id="fb-0-0"></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card" id="qcard-0-1">
+    <div class="q-header">
+      <div class="q-number" id="qnum-0-1">2</div>
+      <div class="q-meta">
+        <span class="q-tag site">Survey Methods</span>
+        <p class="q-text">Along a single 50 m transect, which three distinct survey methods are applied?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,0,1,'A')"><span class="opt-letter">A</span>Method 1 (fish), Method 2 (invertebrates & cryptic fish), and Photo-quadrats (sessile biota)</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,1,'B')"><span class="opt-letter">B</span>Method 1 (fish), Method 2 (coral cover), and Method 3 (water quality)</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,1,'C')"><span class="opt-letter">C</span>Method 1 (fish), Method 2 (seaweeds), and Method 0 (mammals)</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,1,'D')"><span class="opt-letter">D</span>Block 1, Block 2, and a PQ run — all recording the same species</button></li>
+    </ul>
+    <div class="feedback" id="fb-0-1"></div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card" id="qcard-0-2">
+    <div class="q-header">
+      <div class="q-number" id="qnum-0-2">3</div>
+      <div class="q-meta">
+        <span class="q-tag site">Equipment</span>
+        <p class="q-text">Which piece of equipment is specifically mentioned as important when surveying in kelp during the invertebrate search?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,0,2,'A')"><span class="opt-letter">A</span>An underwater torch to illuminate crevices</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,2,'B')"><span class="opt-letter">B</span>Clips or a catch bag on the BC to hold the slate, freeing both hands</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,2,'C')"><span class="opt-letter">C</span>A wide-angle camera lens for recording kelp canopy density</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,2,'D')"><span class="opt-letter">D</span>A mesh bag to collect any kelp that obstructs the transect</button></li>
+    </ul>
+    <div class="feedback" id="fb-0-2"></div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-card" id="qcard-0-3">
+    <div class="q-header">
+      <div class="q-number" id="qnum-0-3">4</div>
+      <div class="q-meta">
+        <span class="q-tag site">Site Selection</span>
+        <p class="q-text">When choosing a transect location, what is the minimum proportion of hard substratum required?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,0,3,'A')"><span class="opt-letter">A</span>50% — equal mix of hard and soft substrate is acceptable</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,3,'B')"><span class="opt-letter">B</span>75% — a majority of hard substrate is needed</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,3,'C')"><span class="opt-letter">C</span>90% — patches of sand or silt are acceptable but aim for at least 90% hard</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,3,'D')"><span class="opt-letter">D</span>100% — no sand or silt is permitted within the transect</button></li>
+    </ul>
+    <div class="feedback" id="fb-0-3"></div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-card" id="qcard-0-4">
+    <div class="q-header">
+      <div class="q-number" id="qnum-0-4">5</div>
+      <div class="q-meta">
+        <span class="q-tag site">GPS & Site Codes</span>
+        <p class="q-text">GPS coordinates for an RLS transect start point must be recorded to what precision, and using which datum?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,0,4,'A')"><span class="opt-letter">A</span>3 decimal places using GDA94</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,4,'B')"><span class="opt-letter">B</span>5 decimal places using WGS 84</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,4,'C')"><span class="opt-letter">C</span>4 decimal places using WGS 84</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,4,'D')"><span class="opt-letter">D</span>Nearest 10 metres using any datum</button></li>
+    </ul>
+    <div class="feedback" id="fb-0-4"></div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="question-card" id="qcard-0-5">
+    <div class="q-header">
+      <div class="q-number" id="qnum-0-5">6</div>
+      <div class="q-meta">
+        <span class="q-tag site">Site Codes</span>
+        <p class="q-text">A diver with initials "JKL" is establishing a brand new site — their 14th new site overall. What temporary site code should they use?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,0,5,'A')"><span class="opt-letter">A</span>NEW14</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,5,'B')"><span class="opt-letter">B</span>JKL14</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,5,'C')"><span class="opt-letter">C</span>SITE-JKL-014</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,5,'D')"><span class="opt-letter">D</span>14-JKL</button></li>
+    </ul>
+    <div class="feedback" id="fb-0-5"></div>
+  </div>
+
+  <!-- Q7 SHORT -->
+  <div class="question-card" id="qcard-0-6">
+    <div class="q-header">
+      <div class="q-number" id="qnum-0-6">7</div>
+      <div class="q-meta">
+        <span class="q-tag safety">Pre-dive Safety</span>
+        <p class="q-text">List three specific pieces of information that buddy pairs MUST have recorded identically on both of their datasheets before (or directly after) a dive.</p>
+      </div>
+    </div>
+    <div class="short-answer-wrap">
+      <textarea id="sa-0-6" placeholder="Write your answer here…"></textarea>
+    </div>
+    <button class="submit-btn" onclick="submitShort(0,6)">Submit answer</button>
+    <div class="feedback" id="fb-0-6"></div>
+  </div>
+
+  <div class="module-actions">
+    <button class="nav-btn" disabled>← Previous</button>
+    <span class="module-score" id="score-0"></span>
+    <button class="nav-btn primary" onclick="goModule(1)">Next module →</button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ MODULE 1 -->
+<section class="module-section" id="mod-1">
+  <div class="intro-card">
+    <h2>Module 2: Fish Survey — Method 1 (M1)</h2>
+    <p>Method 1 is the fish survey. This module tests your understanding of the survey zone dimensions, recording technique, size classes, schooling fish, and how to handle challenging diversity scenarios.</p>
+    <div class="module-pills">
+      <span class="module-pill">Block dimensions</span>
+      <span class="module-pill">Target species</span>
+      <span class="module-pill">Size classes</span>
+      <span class="module-pill">Counting technique</span>
+      <span class="module-pill">High diversity</span>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="question-card" id="qcard-1-0">
+    <div class="q-header">
+      <div class="q-number" id="qnum-1-0">8</div>
+      <div class="q-meta">
+        <span class="q-tag m1">M1 — Fish Survey</span>
+        <p class="q-text">During Method 1, what are the precise dimensions of each survey "block" on either side of the transect line?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,1,0,'A')"><span class="opt-letter">A</span>2.5 m wide × 2.5 m high</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,1,0,'B')"><span class="opt-letter">B</span>5 m wide × 5 m high</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,1,0,'C')"><span class="opt-letter">C</span>10 m wide × 5 m high</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,1,0,'D')"><span class="opt-letter">D</span>5 m wide with no height limit</button></li>
+    </ul>
+    <div class="feedback" id="fb-1-0"></div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="question-card" id="qcard-1-1">
+    <div class="q-header">
+      <div class="q-number" id="qnum-1-1">9</div>
+      <div class="q-meta">
+        <span class="q-tag m1">M1 — Target Species</span>
+        <p class="q-text">Which of the following is CORRECTLY included as a target organism in Method 1?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,1,1,'A')"><span class="opt-letter">A</span>Sea urchins</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,1,1,'B')"><span class="opt-letter">B</span>Nudibranchs</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,1,1,'C')"><span class="opt-letter">C</span>Jellyfish and turtles</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,1,1,'D')"><span class="opt-letter">D</span>Barnacles</button></li>
+    </ul>
+    <div class="feedback" id="fb-1-1"></div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="question-card" id="qcard-1-2">
+    <div class="q-header">
+      <div class="q-number" id="qnum-1-2">10</div>
+      <div class="q-meta">
+        <span class="q-tag m1">M1 — Size Classes</span>
+        <p class="q-text">A diver spots a large shark they estimate is 90 cm in total length. How should this be recorded?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,1,2,'A')"><span class="opt-letter">A</span>Recorded in the "75+" size class without further detail</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,1,2,'B')"><span class="opt-letter">B</span>Individually recorded, estimated to the nearest 12.5 cm (i.e., 87.5 cm)</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,1,2,'C')"><span class="opt-letter">C</span>Not recorded — fish over 62.5 cm are too large for the standard size classes</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,1,2,'D')"><span class="opt-letter">D</span>Recorded as "Method 0" since it is an unusual sighting</button></li>
+    </ul>
+    <div class="feedback" id="fb-1-2"></div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="question-card" id="qcard-1-3">
+    <div class="q-header">
+      <div class="q-number" id="qnum-1-3">11</div>
+      <div class="q-meta">
+        <span class="q-tag m1">M1 — Technique</span>
+        <p class="q-text">During your M1 survey you notice a large wrasse that crossed the transect line from your block into the other diver's block. Your buddy likely recorded it. What should you do?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,1,3,'A')"><span class="opt-letter">A</span>Don't record it — it has already been counted so recording it would create a duplicate</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,1,3,'B')"><span class="opt-letter">B</span>Still record it in your block — this balances fish that moved the other way and weren't counted</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,1,3,'C')"><span class="opt-letter">C</span>Record it as Method 0 to flag that it was seen crossing blocks</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,1,3,'D')"><span class="opt-letter">D</span>Abort the survey and discuss with your buddy before restarting</button></li>
+    </ul>
+    <div class="feedback" id="fb-1-3"></div>
+  </div>
+
+  <!-- Q12 -->
+  <div class="question-card" id="qcard-1-4">
+    <div class="q-header">
+      <div class="q-number" id="qnum-1-4">12</div>
+      <div class="q-meta">
+        <span class="q-tag m1">M1 — Schooling Fish</span>
+        <p class="q-text">You encounter a school of fusiliers that appears to contain several hundred fish. What is the correct approach?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,1,4,'A')"><span class="opt-letter">A</span>Record "too many to count" and move on</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,1,4,'B')"><span class="opt-letter">B</span>Wait for the school to disperse before counting individuals</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,1,4,'C')"><span class="opt-letter">C</span>Count a subset, estimate how many similar subsets fit the school, and multiply</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,1,4,'D')"><span class="opt-letter">D</span>Record a conservative minimum count of 50 as a standard placeholder</button></li>
+    </ul>
+    <div class="feedback" id="fb-1-4"></div>
+  </div>
+
+  <!-- Q13 -->
+  <div class="question-card" id="qcard-1-5">
+    <div class="q-header">
+      <div class="q-number" id="qnum-1-5">13</div>
+      <div class="q-meta">
+        <span class="q-tag m1">M1 — High Diversity</span>
+        <p class="q-text">On a coral reef with overwhelming species diversity, what is the HIGHEST priority during the M1 fish survey when you can't record everything simultaneously?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,1,5,'A')"><span class="opt-letter">A</span>Partition abundance estimates across size classes for common species first</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,1,5,'B')"><span class="opt-letter">B</span>Record the abundance and size of large or rare species before anything else</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,1,5,'C')"><span class="opt-letter">C</span>Get an accurate species list — record the name of every new species seen before worrying about counts</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,1,5,'D')"><span class="opt-letter">D</span>Photograph every species so identification can happen post-dive</button></li>
+    </ul>
+    <div class="feedback" id="fb-1-5"></div>
+  </div>
+
+  <!-- Q14 SHORT -->
+  <div class="question-card" id="qcard-1-6">
+    <div class="q-header">
+      <div class="q-number" id="qnum-1-6">14</div>
+      <div class="q-meta">
+        <span class="q-tag m1">M1 — Unidentified Species</span>
+        <p class="q-text">You see a small reef fish during your M1 swim that you cannot identify. Describe what you should do — both during and after the dive — to handle this correctly.</p>
+      </div>
+    </div>
+    <div class="short-answer-wrap">
+      <textarea id="sa-1-6" placeholder="Write your answer here…"></textarea>
+    </div>
+    <button class="submit-btn" onclick="submitShort(1,6)">Submit answer</button>
+    <div class="feedback" id="fb-1-6"></div>
+  </div>
+
+  <div class="module-actions">
+    <button class="nav-btn" onclick="goModule(0)">← Previous</button>
+    <span class="module-score" id="score-1"></span>
+    <button class="nav-btn primary" onclick="goModule(2)">Next module →</button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ MODULE 2 -->
+<section class="module-section" id="mod-2">
+  <div class="intro-card">
+    <h2>Module 3: Invertebrate & Cryptic Fish Survey — Method 2 (M2)</h2>
+    <p>Method 2 targets macro-invertebrates and cryptic fish species. This module covers what to count, band dimensions, size recording rules, manufactured debris, and the important distinction between M2 and M1 target groups.</p>
+    <div class="module-pills">
+      <span class="module-pill">Target groups</span>
+      <span class="module-pill">What not to count</span>
+      <span class="module-pill">Band dimensions</span>
+      <span class="module-pill">Size recording</span>
+      <span class="module-pill">Debris</span>
+    </div>
+  </div>
+
+  <!-- Q15 -->
+  <div class="question-card" id="qcard-2-0">
+    <div class="q-header">
+      <div class="q-number" id="qnum-2-0">15</div>
+      <div class="q-meta">
+        <span class="q-tag m2">M2 — Band Dimensions</span>
+        <p class="q-text">What are the correct dimensions of each M2 survey band on either side of the transect line?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,2,0,'A')"><span class="opt-letter">A</span>2 m wide × 1 m high</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,2,0,'B')"><span class="opt-letter">B</span>1 m wide × 2 m high</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,2,0,'C')"><span class="opt-letter">C</span>5 m wide × 2 m high</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,2,0,'D')"><span class="opt-letter">D</span>1 m wide × 5 m high</button></li>
+    </ul>
+    <div class="feedback" id="fb-2-0"></div>
+  </div>
+
+  <!-- Q16 -->
+  <div class="question-card" id="qcard-2-1">
+    <div class="q-header">
+      <div class="q-number" id="qnum-2-1">16</div>
+      <div class="q-meta">
+        <span class="q-tag m2">M2 — What to Count</span>
+        <p class="q-text">Which of the following invertebrates should NOT be counted during M2?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,2,1,'A')"><span class="opt-letter">A</span>A 15 cm sea cucumber</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,2,1,'B')"><span class="opt-letter">B</span>A large rock lobster</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,2,1,'C')"><span class="opt-letter">C</span>A sponge permanently attached to the reef</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,2,1,'D')"><span class="opt-letter">D</span>A 5 cm nudibranch crawling across the substrate</button></li>
+    </ul>
+    <div class="feedback" id="fb-2-1"></div>
+  </div>
+
+  <!-- Q17 -->
+  <div class="question-card" id="qcard-2-2">
+    <div class="q-header">
+      <div class="q-number" id="qnum-2-2">17</div>
+      <div class="q-meta">
+        <span class="q-tag m2">M2 — Size Recording</span>
+        <p class="q-text">For which invertebrate species is it mandatory to record size estimates during M2 (as opposed to just a count)?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,2,2,'A')"><span class="opt-letter">A</span>Sea urchins and sea stars</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,2,2,'B')"><span class="opt-letter">B</span>Rock lobsters and abalone only</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,2,2,'C')"><span class="opt-letter">C</span>All invertebrates must have sizes recorded</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,2,2,'D')"><span class="opt-letter">D</span>Only nudibranchs and sea cucumbers</button></li>
+    </ul>
+    <div class="feedback" id="fb-2-2"></div>
+  </div>
+
+  <!-- Q18 -->
+  <div class="question-card" id="qcard-2-3">
+    <div class="q-header">
+      <div class="q-number" id="qnum-2-3">18</div>
+      <div class="q-meta">
+        <span class="q-tag m2">M2 — Cryptic Fish</span>
+        <p class="q-text">During your M2 swim you spot a wrasse that you definitely missed during M1. What is the correct action?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,2,3,'A')"><span class="opt-letter">A</span>Add it to your M1 datasheet retrospectively so the fish survey is complete</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,2,3,'B')"><span class="opt-letter">B</span>Record it in M2 as you would any fish seen during that method</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,2,3,'C')"><span class="opt-letter">C</span>Record it as Method 0, not in M1 or M2, to avoid biasing either dataset</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,2,3,'D')"><span class="opt-letter">D</span>Ignore it — wrasses are not relevant to either method when seen outside their survey time</button></li>
+    </ul>
+    <div class="feedback" id="fb-2-3"></div>
+  </div>
+
+  <!-- Q19 -->
+  <div class="question-card" id="qcard-2-4">
+    <div class="q-header">
+      <div class="q-number" id="qnum-2-4">19</div>
+      <div class="q-meta">
+        <span class="q-tag m2">M2 — Debris</span>
+        <p class="q-text">During M2 you find a discarded fishing net and three separate plastic bottles. How should manufactured debris be recorded?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,2,4,'A')"><span class="opt-letter">A</span>Record as a single "debris" observation — count is not required</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,2,4,'B')"><span class="opt-letter">B</span>Net = 1 item (code: def); plastic bottles = 3 items (code: dep), each counted individually</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,2,4,'C')"><span class="opt-letter">C</span>Record as Method 0 since debris is not biological data</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,2,4,'D')"><span class="opt-letter">D</span>Only record if you remove the item from the water</button></li>
+    </ul>
+    <div class="feedback" id="fb-2-4"></div>
+  </div>
+
+  <!-- Q20 -->
+  <div class="question-card" id="qcard-2-5">
+    <div class="q-header">
+      <div class="q-number" id="qnum-2-5">20</div>
+      <div class="q-meta">
+        <span class="q-tag m2">M2 — Technique</span>
+        <p class="q-text">Why is it important to clip your slate to your BC during M2 in dense kelp?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,2,5,'A')"><span class="opt-letter">A</span>To protect the slate from damage by the kelp fronds</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,2,5,'B')"><span class="opt-letter">B</span>So you can use both hands in a breaststroke fashion to part the seaweed and effectively search the full 1 m width</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,2,5,'C')"><span class="opt-letter">C</span>To ensure the slate doesn't interfere with photo-quadrat photography</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,2,5,'D')"><span class="opt-letter">D</span>Because the M2 survey requires both hands free to move rocks and boulders</button></li>
+    </ul>
+    <div class="feedback" id="fb-2-5"></div>
+  </div>
+
+  <!-- Q21 SHORT -->
+  <div class="question-card" id="qcard-2-6">
+    <div class="q-header">
+      <div class="q-number" id="qnum-2-6">21</div>
+      <div class="q-meta">
+        <span class="q-tag m2">M2 — Echinoderms</span>
+        <p class="q-text">From the echinoderm group, most are counted in M2 but there is one important exception. Identify the exception and explain the rule that applies to it.</p>
+      </div>
+    </div>
+    <div class="short-answer-wrap">
+      <textarea id="sa-2-6" placeholder="Write your answer here…"></textarea>
+    </div>
+    <button class="submit-btn" onclick="submitShort(2,6)">Submit answer</button>
+    <div class="feedback" id="fb-2-6"></div>
+  </div>
+
+  <div class="module-actions">
+    <button class="nav-btn" onclick="goModule(1)">← Previous</button>
+    <span class="module-score" id="score-2"></span>
+    <button class="nav-btn primary" onclick="goModule(3)">Next module →</button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ MODULE 3 -->
+<section class="module-section" id="mod-3">
+  <div class="intro-card">
+    <h2>Module 4: Photo-Quadrats, Data Entry & Submission</h2>
+    <p>Accurate photo-quadrats and clean data entry are critical for downstream analysis. This module covers PQ technique, labelling conventions, data entry tips, and how to submit your data to RLS.</p>
+    <div class="module-pills">
+      <span class="module-pill">PQ technique</span>
+      <span class="module-pill">PQ labelling</span>
+      <span class="module-pill">Data entry</span>
+      <span class="module-pill">Submission</span>
+      <span class="module-pill">Method 0</span>
+    </div>
+  </div>
+
+  <!-- Q22 -->
+  <div class="question-card" id="qcard-3-0">
+    <div class="q-header">
+      <div class="q-number" id="qnum-3-0">22</div>
+      <div class="q-meta">
+        <span class="q-tag pq">Photo-Quadrats</span>
+        <p class="q-text">How many photo-quadrats are taken along a single 50 m transect, and at what interval?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,3,0,'A')"><span class="opt-letter">A</span>10 quadrats, every 5 m</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,0,'B')"><span class="opt-letter">B</span>20 quadrats, every 2.5 m</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,0,'C')"><span class="opt-letter">C</span>25 quadrats, every 2 m</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,0,'D')"><span class="opt-letter">D</span>50 quadrats, every 1 m</button></li>
+    </ul>
+    <div class="feedback" id="fb-3-0"></div>
+  </div>
+
+  <!-- Q23 -->
+  <div class="question-card" id="qcard-3-1">
+    <div class="q-header">
+      <div class="q-number" id="qnum-3-1">23</div>
+      <div class="q-meta">
+        <span class="q-tag pq">PQ Technique</span>
+        <p class="q-text">At what height above the seabed should photos be taken, and why is the exact area photographed not critical?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,3,1,'A')"><span class="opt-letter">A</span>1 m above seabed; exact area doesn't matter because only species presence/absence is recorded</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,1,'B')"><span class="opt-letter">B</span>50 cm above seabed; exact area isn't critical because data is calculated as a percentage not total density</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,1,'C')"><span class="opt-letter">C</span>30 cm above seabed; area is standardised by the camera frame so all images capture the same size</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,1,'D')"><span class="opt-letter">D</span>50 cm above seabed; exact area matters and must be consistent across all quadrats</button></li>
+    </ul>
+    <div class="feedback" id="fb-3-1"></div>
+  </div>
+
+  <!-- Q24 -->
+  <div class="question-card" id="qcard-3-2">
+    <div class="q-header">
+      <div class="q-number" id="qnum-3-2">24</div>
+      <div class="q-meta">
+        <span class="q-tag pq">PQ Labelling</span>
+        <p class="q-text">PQ file names must contain five pieces of information. Which of the following is NOT one of them?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,3,2,'A')"><span class="opt-letter">A</span>Site code</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,2,'B')"><span class="opt-letter">B</span>Transect depth</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,2,'C')"><span class="opt-letter">C</span>Camera model used</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,2,'D')"><span class="opt-letter">D</span>Date (6 digits)</button></li>
+    </ul>
+    <div class="feedback" id="fb-3-2"></div>
+  </div>
+
+  <!-- Q25 -->
+  <div class="question-card" id="qcard-3-3">
+    <div class="q-header">
+      <div class="q-number" id="qnum-3-3">25</div>
+      <div class="q-meta">
+        <span class="q-tag data">Data Entry</span>
+        <p class="q-text">What value should be entered in the "block" column of the data entry template for a Method 0 observation?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,3,3,'A')"><span class="opt-letter">A</span>Leave it blank</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,3,'B')"><span class="opt-letter">B</span>"0" — it doesn't relate to a specific survey block</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,3,'C')"><span class="opt-letter">C</span>"M0" to distinguish it from M1 and M2 data</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,3,'D')"><span class="opt-letter">D</span>The block closest to where the animal was seen (B1 or B2)</button></li>
+    </ul>
+    <div class="feedback" id="fb-3-3"></div>
+  </div>
+
+  <!-- Q26 -->
+  <div class="question-card" id="qcard-3-4">
+    <div class="q-header">
+      <div class="q-number" id="qnum-3-4">26</div>
+      <div class="q-meta">
+        <span class="q-tag data">Data Entry</span>
+        <p class="q-text">Why is it essential that PQ label details (depth, site code) exactly match what's been entered in the Excel datasheet?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,3,4,'A')"><span class="opt-letter">A</span>Because RLS uses the PQ filename as the primary survey identifier in the database</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,4,'B')"><span class="opt-letter">B</span>Because the two parts need to be matched up in the RLS database, and mismatches prevent linking species data with habitat images</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,4,'C')"><span class="opt-letter">C</span>It's not essential — PQs and datasheets are processed independently</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,4,'D')"><span class="opt-letter">D</span>Because file names are used for copyright attribution to the photographer</button></li>
+    </ul>
+    <div class="feedback" id="fb-3-4"></div>
+  </div>
+
+  <!-- Q27 -->
+  <div class="question-card" id="qcard-3-5">
+    <div class="q-header">
+      <div class="q-number" id="qnum-3-5">27</div>
+      <div class="q-meta">
+        <span class="q-tag data">Method 0</span>
+        <p class="q-text">Which of the following is a VALID use of Method 0 (M0)?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,3,5,'A')"><span class="opt-letter">A</span>Recording a fish seen 8 m from the transect line during the M1 swim</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,5,'B')"><span class="opt-letter">B</span>Recording a rare shark species seen while swimming to the start of the transect before the survey began</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,5,'C')"><span class="opt-letter">C</span>Adding fish to M1 that were spotted during M2 to make the fish survey more complete</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,5,'D')"><span class="opt-letter">D</span>Recording an animal to both M1 and M2 when it fits in both categories</button></li>
+    </ul>
+    <div class="feedback" id="fb-3-5"></div>
+  </div>
+
+  <!-- Q28 SHORT -->
+  <div class="question-card" id="qcard-3-6">
+    <div class="q-header">
+      <div class="q-number" id="qnum-3-6">28</div>
+      <div class="q-meta">
+        <span class="q-tag pq">PQ — Image Quality</span>
+        <p class="q-text">In poor underwater visibility, your in-built camera flash isn't reaching far enough to illuminate the full 0.3 × 0.3 m area clearly. What should you do, and why?</p>
+      </div>
+    </div>
+    <div class="short-answer-wrap">
+      <textarea id="sa-3-6" placeholder="Write your answer here…"></textarea>
+    </div>
+    <button class="submit-btn" onclick="submitShort(3,6)">Submit answer</button>
+    <div class="feedback" id="fb-3-6"></div>
+  </div>
+
+  <div class="module-actions">
+    <button class="nav-btn" onclick="goModule(2)">← Previous</button>
+    <span class="module-score" id="score-3"></span>
+    <button class="nav-btn primary" onclick="goModule(4)">Next module →</button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ MODULE 4 -->
+<section class="module-section" id="mod-4">
+  <div class="intro-card">
+    <h2>Module 5: Special Circumstances & Advanced Scenarios</h2>
+    <p>Reefs come in many shapes. This module covers the wall method, narrow reef surveys, jetty surveys, re-surveying existing sites, and how to handle unidentified species using correct naming conventions.</p>
+    <div class="module-pills">
+      <span class="module-pill">Wall surveys</span>
+      <span class="module-pill">Narrow reef</span>
+      <span class="module-pill">Jetties</span>
+      <span class="module-pill">Resurveying</span>
+      <span class="module-pill">Unidentified species</span>
+    </div>
+  </div>
+
+  <!-- Q29 -->
+  <div class="question-card" id="qcard-4-0">
+    <div class="q-header">
+      <div class="q-number" id="qnum-4-0">29</div>
+      <div class="q-meta">
+        <span class="q-tag site">Wall Surveys</span>
+        <p class="q-text">When must the "wall method" be used instead of the standard M1 approach on a vertical wall?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,4,0,'A')"><span class="opt-letter">A</span>Whenever any vertical wall is present along any portion of the transect</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,4,0,'B')"><span class="opt-letter">B</span>When the wall reaches the surface, or when the transect line is set more than 5 m below the top of the wall</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,4,0,'C')"><span class="opt-letter">C</span>Only when the wall exceeds 20 m in height</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,4,0,'D')"><span class="opt-letter">D</span>When visibility is less than 5 m, as horizontal estimation is not possible</button></li>
+    </ul>
+    <div class="feedback" id="fb-4-0"></div>
+  </div>
+
+  <!-- Q30 -->
+  <div class="question-card" id="qcard-4-1">
+    <div class="q-header">
+      <div class="q-number" id="qnum-4-1">30</div>
+      <div class="q-meta">
+        <span class="q-tag site">Wall Method</span>
+        <p class="q-text">In the wall method, how are B1 and B2 oriented relative to the transect line (as opposed to the standard method)?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,4,1,'A')"><span class="opt-letter">A</span>B1 and B2 are still side by side horizontally, but each block is narrowed to 2.5 m</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,4,1,'B')"><span class="opt-letter">B</span>B1 is below the transect line (to 5 m depth) and B2 is above it (to 5 m height) — blocks placed one on top of the other</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,4,1,'C')"><span class="opt-letter">C</span>Both blocks are merged into one single 10 m wide block facing away from the wall</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,4,1,'D')"><span class="opt-letter">D</span>Only B1 is surveyed on walls; B2 is omitted as there is no substrate in that direction</button></li>
+    </ul>
+    <div class="feedback" id="fb-4-1"></div>
+  </div>
+
+  <!-- Q31 -->
+  <div class="question-card" id="qcard-4-2">
+    <div class="q-header">
+      <div class="q-number" id="qnum-4-2">31</div>
+      <div class="q-meta">
+        <span class="q-tag site">Narrow Reef</span>
+        <p class="q-text">A reef/wall is less than 10 m wide. What adapted survey approach is required?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,4,2,'A')"><span class="opt-letter">A</span>Skip the site — surveys cannot be done on reefs narrower than 10 m</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,4,2,'B')"><span class="opt-letter">B</span>Survey only one block along the line; then set a second line end-on so two blocks are surveyed in total</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,4,2,'C')"><span class="opt-letter">C</span>Compress both blocks to 5 m wide each and place them end-on along the reef</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,4,2,'D')"><span class="opt-letter">D</span>Extend the transect to 100 m to compensate for the narrow width</button></li>
+    </ul>
+    <div class="feedback" id="fb-4-2"></div>
+  </div>
+
+  <!-- Q32 -->
+  <div class="question-card" id="qcard-4-3">
+    <div class="q-header">
+      <div class="q-number" id="qnum-4-3">32</div>
+      <div class="q-meta">
+        <span class="q-tag site">Resurveying</span>
+        <p class="q-text">You plan to resurvey an existing RLS site but you're not confident you can get to within a few metres of the exact GPS coordinates. What should you do?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,4,3,'A')"><span class="opt-letter">A</span>Use the existing site code anyway — approximate location is close enough for data purposes</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,4,3,'B')"><span class="opt-letter">B</span>Treat it as a new site, use your own numbering system, and collect fresh GPS coordinates</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,4,3,'C')"><span class="opt-letter">C</span>Don't survey — it must wait until conditions allow exact positioning</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,4,3,'D')"><span class="opt-letter">D</span>Contact RLS during the dive via radio to get real-time positional guidance</button></li>
+    </ul>
+    <div class="feedback" id="fb-4-3"></div>
+  </div>
+
+  <!-- Q33 -->
+  <div class="question-card" id="qcard-4-4">
+    <div class="q-header">
+      <div class="q-number" id="qnum-4-4">33</div>
+      <div class="q-meta">
+        <span class="q-tag site">Unidentified Species</span>
+        <p class="q-text">You are confident a fish belongs to the genus <em>Pomacentrus</em> but you believe it may be an undescribed species closely resembling <em>P. coelestis</em>. Which naming convention should you use?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,4,4,'A')"><span class="opt-letter">A</span><em>Pomacentrus coelestis</em> (?)</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,4,4,'B')"><span class="opt-letter">B</span><em>Pomacentrus</em> spp.</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,4,4,'C')"><span class="opt-letter">C</span><em>Pomacentrus</em> sp. [coelestis]</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,4,4,'D')"><span class="opt-letter">D</span>Unknown damselfish</button></li>
+    </ul>
+    <div class="feedback" id="fb-4-4"></div>
+  </div>
+
+  <!-- Q34 SHORT -->
+  <div class="question-card" id="qcard-4-5">
+    <div class="q-header">
+      <div class="q-number" id="qnum-4-5">34</div>
+      <div class="q-meta">
+        <span class="q-tag site">Jetty Surveys</span>
+        <p class="q-text">Describe how the M2 invertebrate search is adapted specifically for a jetty survey, including how the transect line is laid and which surfaces are searched.</p>
+      </div>
+    </div>
+    <div class="short-answer-wrap">
+      <textarea id="sa-4-5" placeholder="Write your answer here…"></textarea>
+    </div>
+    <button class="submit-btn" onclick="submitShort(4,5)">Submit answer</button>
+    <div class="feedback" id="fb-4-5"></div>
+  </div>
+
+  <!-- Q35 SHORT -->
+  <div class="question-card" id="qcard-4-6">
+    <div class="q-header">
+      <div class="q-number" id="qnum-4-6">35</div>
+      <div class="q-meta">
+        <span class="q-tag site">Key Principles</span>
+        <p class="q-text">Explain why RLS data are described as "most usefully applied in a relative sense" — what does this mean for how you should conduct surveys?</p>
+      </div>
+    </div>
+    <div class="short-answer-wrap">
+      <textarea id="sa-4-6" placeholder="Write your answer here…"></textarea>
+    </div>
+    <button class="submit-btn" onclick="submitShort(4,6)">Submit answer</button>
+    <div class="feedback" id="fb-4-6"></div>
+  </div>
+
+  <div class="module-actions">
+    <button class="nav-btn" onclick="goModule(3)">← Previous</button>
+    <span class="module-score" id="score-4"></span>
+    <button class="nav-btn primary" onclick="showResults()">Complete quiz →</button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ RESULTS -->
+<section class="results-screen" id="results-screen">
+  <div class="results-hero">
+    <div class="score-ring" id="final-ring">0%</div>
+    <h2 id="results-title">Quiz complete!</h2>
+    <p id="results-subtitle">Here's your performance across all modules.</p>
+  </div>
+
+  <div class="module-breakdown">
+    <h3>Module breakdown</h3>
+    <div id="breakdown-rows"></div>
+  </div>
+
+  <div class="submit-results">
+    <h3>Submit your results to RLS</h3>
+    <p>Enter your details below so RLS can record your pre-training assessment and follow up if needed.</p>
+    <div class="form-grid">
+      <div class="form-row">
+        <label>First name *</label>
+        <input type="text" id="diver-first" placeholder="e.g. Jane">
+      </div>
+      <div class="form-row">
+        <label>Last name *</label>
+        <input type="text" id="diver-last" placeholder="e.g. Smith">
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Email address *</label>
+      <input type="email" id="diver-email" placeholder="your@email.com">
+    </div>
+    <div class="form-grid">
+      <div class="form-row">
+        <label>State / Country</label>
+        <input type="text" id="diver-location" placeholder="e.g. Tasmania, AUS">
+      </div>
+      <div class="form-row">
+        <label>Dive experience</label>
+        <select id="diver-exp">
+          <option value="">Select…</option>
+          <option>< 50 dives</option>
+          <option>50–200 dives</option>
+          <option>200–500 dives</option>
+          <option>> 500 dives</option>
+        </select>
+      </div>
+    </div>
+    <button class="send-btn" onclick="submitToRLS()">Submit results to RLS HQ</button>
+    <div class="submission-success" id="submit-success">
+      ✓ Results submitted! RLS will review your assessment and be in touch before your first field survey.
+    </div>
+  </div>
+
+  <button class="retry-btn" onclick="restartQuiz()">↺ Restart quiz</button>
+</section>
+
+</main>
+
+<!-- ADMIN TOGGLE -->
+<button class="admin-toggle" onclick="toggleAdmin()" title="Admin panel" aria-label="Open admin panel">⚙</button>
+
+<!-- ADMIN PANEL -->
+<div class="admin-panel" id="admin-panel">
+  <div class="admin-header">
+    <h3>RLS Quiz Admin</h3>
+    <button class="admin-close" onclick="toggleAdmin()">×</button>
+  </div>
+  <div class="admin-body">
+
+    <div class="admin-section">
+      <h4>RLS HQ Settings</h4>
+      <div class="rls-hq-config">
+        <p>To receive results by email, configure a form endpoint below. Use a free service like <strong>Formspree</strong> (<code>formspree.io</code>) or <strong>Web3Forms</strong> and paste your endpoint URL here. Alternatively, results are always stored locally and exportable as CSV.</p>
+      </div>
+      <div class="admin-field">
+        <label>Form endpoint URL (optional)</label>
+        <input type="text" id="cfg-endpoint" placeholder="https://formspree.io/f/YOUR_ID" oninput="saveConfig()">
+      </div>
+      <div class="admin-field">
+        <label>RLS HQ Email (displayed on confirmation)</label>
+        <input type="text" id="cfg-email" value="enquiries@reeflifesurvey.com" oninput="saveConfig()">
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <h4>Quiz Settings</h4>
+      <div class="admin-field">
+        <label>Quiz title</label>
+        <input type="text" id="cfg-title" value="RLS Methods Training Quiz" oninput="saveConfig()">
+      </div>
+      <div class="admin-field">
+        <label>Pass mark (%)</label>
+        <input type="number" id="cfg-pass" value="75" min="0" max="100" oninput="saveConfig()">
+      </div>
+      <div class="admin-field">
+        <label>Admin password</label>
+        <input type="password" id="cfg-password" placeholder="Set a password for this panel" oninput="saveConfig()">
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <h4>Submissions (<span id="sub-count">0</span>)</h4>
+      <div id="submissions-list" class="submissions-list">
+        <p class="no-submissions">No submissions yet.</p>
+      </div>
+      <button class="export-btn" onclick="exportCSV()">⬇ Export all as CSV</button>
+      <button class="export-btn" onclick="clearSubmissions()" style="margin-top:6px; color:#a32d2d;">Clear all submissions</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const ANSWERS = {
+  '0-0': 'B', '0-1': 'A', '0-2': 'B', '0-3': 'C', '0-4': 'B', '0-5': 'B',
+  '1-0': 'B', '1-1': 'C', '1-2': 'B', '1-3': 'B', '1-4': 'C', '1-5': 'C',
+  '2-0': 'B', '2-1': 'C', '2-2': 'B', '2-3': 'C', '2-4': 'B', '2-5': 'B',
+  '3-0': 'B', '3-1': 'B', '3-2': 'C', '3-3': 'B', '3-4': 'B', '3-5': 'B',
+  '4-0': 'B', '4-1': 'B', '4-2': 'B', '4-3': 'B', '4-4': 'C'
+};
+
+const FEEDBACK = {
+  '0-0': {c:'Correct! The standard RLS transect line is 50 m long.', w:'The standard RLS transect is exactly 50 m long — this is consistent across all surveys worldwide.'},
+  '0-1': {c:'Correct! Method 1 targets fish, Method 2 targets invertebrates & cryptic fish, and Photo-quadrats (PQ) cover sessile biota and seaweeds.', w:'The three methods are: M1 (fish), M2 (invertebrates & cryptic fish), and Photo-quadrats (PQ for sessile biota & seaweeds). Each targets a different taxonomic group along the same 50 m line.'},
+  '0-2': {c:'Correct! Clips or a catch bag on the BC are essential in kelp — they free both hands to part seaweed in a breaststroke style.', w:'The manual specifically highlights that being able to clip your slate to your BC is important in kelp so both hands are free to part the seaweed during the M2 search.'},
+  '0-3': {c:'Correct! Aim for at least 90% hard substratum — small patches of sand or silt are fine.', w:'The guideline is to aim for at least 90% hard substratum. Patches of sand or silt are acceptable within that remaining 10%.'},
+  '0-4': {c:'Correct! 5 decimal places of decimal degrees using WGS 84.', w:'GPS positions must be recorded in decimal degrees to 5 decimal places using the WGS 84 datum. This precision is needed for accurate re-surveys.'},
+  '0-5': {c:'Correct! Temporary site codes are formed from the diver\'s initials + a sequential number — JKL14.', w:'Temporary site codes use the diver\'s initials followed by their sequential new-site number, e.g. JKL14 for the 14th new site by diver "JKL".'},
+  '0-6': {ma:'Key items include any three of: Site Name, Site Number, Latitude, Longitude, Date, Depth, and Direction. All of these must match exactly on buddy pairs\' datasheets.'},
+  '1-0': {c:'Correct! Each M1 block is 5 m wide × 5 m high on either side of the 50 m transect line.', w:'Each fish survey block is 5 m wide and 5 m high. Divers swim along the middle of this "tunnel" approximately 1 m above the seabed.'},
+  '1-1': {c:'Correct! Method 1 targets all fishes and large swimming animals — including jellyfish, turtles, seals, and whales.', w:'M1 target group = all fishes AND other large swimming animals such as squid, octopus, jellyfish, seals, turtles, and whales. Sea urchins, nudibranchs, and barnacles belong to M2 or PQ methods.'},
+  '1-2': {c:'Correct! Fish larger than 62.5 cm are individually recorded and estimated to the nearest 12.5 cm. So 90 cm → recorded as 87.5 cm.', w:'Fish larger than 62.5 cm must be individually recorded and estimated to the nearest 12.5 cm. 90 cm would be recorded as 87.5 cm (the nearest 12.5 cm increment).'},
+  '1-3': {c:'Correct! Still record a fish that crossed from the other block — this balances fish that moved the other way undetected. Never re-record a fish you already counted in the same block.', w:'The protocol says to still record a fish seen crossing from the other block, as this balances out fish that moved in the opposite direction without being counted. Don\'t re-record within the same block however.'},
+  '1-4': {c:'Correct! For schools, count a subset and multiply by the estimated number of similar subsets that make up the whole school.', w:'The correct technique for large schools is to count a recognisable subset (e.g. a row of fish), estimate how many such subsets fill the school, then multiply. Never write "too many to count" or use a fixed placeholder.'},
+  '1-5': {c:'Correct! Priority 1 is always an accurate species list — record every new species name before worrying about counts, sizes, or abundance estimates.', w:'The priority order for high-diversity surveys is: (1) accurate species list, (2) abundance & size of large/rare species, (3) abundance estimates for other species, (4) size partitioning for other species. Species list always comes first.'},
+  '1-6': {ma:'During the dive: take a photograph, draw a picture, and/or write a descriptive note on the slate. Do NOT ignore it — record it as an unidentified member of a genus or family if possible. After the dive: check field guides and ask others. Email RLS a photo if it remains unidentified. Still record it — even an unidentified species contributes important species richness information.'},
+  '2-0': {c:'Correct! M2 bands are 1 m wide × 2 m high on each side of the transect line.', w:'M2 survey bands are 1 m horizontal distance either side of the line, with a maximum height of 2 m above or below the line (on steeply sloping reefs). This is much narrower than M1\'s 5 m wide bands.'},
+  '2-1': {c:'Correct! Sponges permanently attached to the reef are not counted in M2. Only mobile invertebrates larger than 2.5 cm are counted.', w:'Sponges — along with other permanently sessile organisms like anemones (except large swimming anemones), barnacles, corals, hydroids, and bryozoans — are NOT counted in M2. Only mobile invertebrates >2.5 cm mature size are targeted.'},
+  '2-2': {c:'Correct! Rock lobsters and abalone are the only invertebrates that require individual size estimates during M2.', w:'For most invertebrates, only a count is needed. But rock lobsters (measured from antennal horns to rear of carapace) and abalone (widest shell width) must both have individual size estimates recorded using the same size classes as fish.'},
+  '2-3': {c:'Correct! A non-cryptic fish missed during M1 but seen during M2 should be recorded as Method 0. It must NEVER be added to M1 datasheets afterwards.', w:'Wrasses are not cryptic fish, so they don\'t belong in M2. But they also can\'t be added to M1 after the fact. The correct solution is to record them as Method 0. Adding species to M1 retrospectively would bias the dataset.'},
+  '2-4': {c:'Correct! Debris is counted individually by category. Fishing net = 1 item (code: def); each plastic bottle = 1 item (code: dep). Three bottles = 3 dep records.', w:'Manufactured debris uses two codes: "def" for fishing gear (hook/line/netting) and "dep" for any plastic debris. Items are counted individually. Two attached fishing items count as just one. Comments must note whether items were removed or left.'},
+  '2-5': {c:'Correct! With both hands free you can use a breaststroke movement to part kelp fronds, ensuring the full 1 m band is effectively searched rather than a narrower accidental corridor.', w:'Clipping the slate to your BC is critical in kelp so both arms are free. The breaststroke movement parts kelp fronds to reveal the substrate and ensures you search the full intended 1 m width — not an accidentally narrowed band.'},
+  '2-6': {ma:'Exception: Ophiuroids (brittlestars). Unlike other echinoderms (echinoids, crinoids, holothurians, asteroids — all counted), brittlestars are NOT counted in M2 EXCEPT for basket stars, which are exposed and visible. Regular brittlestars are excluded even if they exceed 2.5 cm in size.'},
+  '3-0': {c:'Correct! 20 photo-quadrats per transect, taken every 2.5 m along the 50 m line.', w:'Exactly 20 photo-quadrats are taken per transect at 2.5 m intervals — positions 2.5 m, 5 m, 7.5 m … up to 47.5 m and 49 m as marked on the line.'},
+  '3-1': {c:'Correct! Photos are taken from approximately 50 cm above the seabed. The exact area photographed isn\'t critical because data is expressed as percentage cover, not absolute density.', w:'PQs should be taken from ~50 cm above the seabed. Crucially, the exact area is NOT critical because analysis uses percentage cover. A sharp, well-lit image is more valuable than a precise footprint — if clarity requires going closer, do so and take more photos.'},
+  '3-2': {c:'Correct! Camera model is NOT part of the PQ naming convention. The five required elements are: site code, photographer\'s initials, transect depth, date, and site name.', w:'The five required PQ label components are: (1) site code, (2) photographer/diver initials, (3) transect depth (+ \'m\'), (4) date (6 digits), (5) site name. Camera model is not included.'},
+  '3-3': {c:'Correct! Method 0 observations get a value of "0" in the block column since they don\'t relate to a specific M1 or M2 block.', w:'M0 observations must be given "0" in the block column of the data entry template. They are separate from M1 and M2 data and don\'t belong to a specific block. They can be recorded anywhere on the datasheet as long as they are clearly distinguished.'},
+  '3-4': {c:'Correct! PQ labels and datasheets must match exactly (especially depth and site code) so the two data streams can be linked in the RLS database.', w:'The RLS database links photo-quadrat images to survey species data by matching label information. If depth or site code differ between the PQ filename and the Excel entry, the two datasets cannot be linked — the PQs become unattributable.'},
+  '3-5': {c:'Correct! Recording a rare species seen outside the formal transect window (before the survey started) is exactly what M0 is designed for.', w:'Method 0 exists to record species that fall outside the time and space boundaries of M1 and M2. Sightings off-transect, before/after the survey, or across method boundaries should all go to M0 — NEVER be added to M1 or M2 to avoid biasing results.'},
+  '3-6': {ma:'Move the camera closer to the substrate to get a clearer, better-lit image — even if this means photographing a smaller area (e.g. 15 × 15 cm rather than 30 × 30 cm). To compensate for the smaller frame, increase the number of photos taken (e.g. 40 instead of 20). A sharp well-lit image of a smaller area is always preferable to a large murky one with unidentifiable organisms.'},
+  '4-0': {c:'Correct! The wall method is triggered when (a) the wall reaches the surface, OR (b) the transect line is set more than 5 m below the top of the wall.', w:'The wall method applies in two scenarios: (1) the wall reaches all the way to the surface, or (2) the transect line is placed more than 5 m below the top of the wall. In these cases, the standard side-by-side block configuration doesn\'t work.'},
+  '4-1': {c:'Correct! In the wall method, B1 covers everything below the transect line (to 5 m depth) and B2 covers everything above (to 5 m height) — stacked vertically rather than side by side.', w:'The wall method flips the block orientation from horizontal (side by side) to vertical (stacked). B1 encompasses fish in the 5 m zone below the transect line; B2 covers the 5 m zone above it. The 5 m horizontal distance extends perpendicular to the wall in both blocks.'},
+  '4-2': {c:'Correct! On reef or walls less than 10 m wide, survey one block per line, then set a second transect end-on to the first to achieve two blocks total.', w:'When the reef or wall is less than 10 m wide, only one block can be surveyed along each transect. A second transect line is set end-on (perpendicular) so that two blocks are covered in total. Both lines still take photo-quadrats and are labelled as blocks 1 and 2 in data entry.'},
+  '4-3': {c:'Correct! If you can\'t guarantee reaching within a few metres of an existing site\'s GPS coordinates, treat it as a new site with your own code and freshly collected GPS position.', w:'Accuracy is critical for temporal resurveys. If you can\'t guarantee reaching within a few metres of the exact GPS coordinates of an existing site, you must treat it as a new site — use your own temporary code and record new GPS coordinates rather than potentially linking data from a different location.'},
+  '4-4': {c:'Correct! "Genus sp. [species]" notation is used when you are sure of the genus and believe your specimen may be a form or variant of a known species — e.g. Pomacentrus sp. [coelestis].', w:'"Genus sp. [species]" (e.g. Pomacentrus sp. [coelestis]) = sure of genus, possible variant of a known species. "Genus species (?)" = unsure of genus but it might be that species. "Genus sp. (character)" = sure of genus, species unknown — add a distinguishing character in brackets.'},
+  '4-5': {ma:'Key points: The transect line is laid in a zig-zag/chicane fashion around consecutive piles, staying within 1 m of each pile. The M2 search covers the standard 1 m either side of the line PLUS all surfaces of each pile in the assigned block up to 2 m height from the bottom. Every second pile is covered in each block. The line usually runs perpendicular to shore (not along a depth contour).'},
+  '4-6': {ma:'"Relative sense" means the data are most valuable for comparing sites or time periods when exactly the same protocol is used. Because slight changes to method (e.g. different swim speed, band width) would change counts, the absolute numbers are less meaningful than changes between surveys done identically. This means strict adherence to the protocol is essential — not to get "right" absolute numbers, but to ensure any observed changes reflect real ecological changes, not methodological ones.'}
+};
+
+const MODULE_NAMES = ['Survey Basics','Fish Survey (M1)','Invertebrate Survey (M2)','Photo-Quadrats & Data','Special Circumstances'];
+const MODULE_Q_COUNTS = [7, 7, 7, 7, 7];
+
+let scores = {mc:[0,0,0,0,0], sa:[0,0,0,0,0], mc_total:[6,6,6,6,5], sa_total:[1,1,1,1,2]};
+let answered = {};
+let saAnswered = {};
+let currentMod = 0;
+
+function selectOption(btn, mod, qi, letter) {
+  const key = mod+'-'+qi;
+  if(answered[key]) return;
+  answered[key] = letter;
+  const correct = ANSWERS[key];
+  const isCorrect = letter === correct;
+  const card = document.getElementById('qcard-'+mod+'-'+qi);
+  const numEl = document.getElementById('qnum-'+mod+'-'+qi);
+  const fb = document.getElementById('fb-'+mod+'-'+qi);
+  const allBtns = btn.closest('.options-list').querySelectorAll('.option-btn');
+  allBtns.forEach(b => {
+    b.disabled = true;
+    const l = b.querySelector('.opt-letter').textContent;
+    if(l === correct) b.classList.add('correct-ans');
+    if(l === letter && !isCorrect) b.classList.add('wrong-ans');
+  });
+  fb.className = 'feedback show '+(isCorrect?'correct-fb':'incorrect-fb');
+  fb.innerHTML = isCorrect
+    ? '<strong>✓ Correct!</strong> '+FEEDBACK[key].c
+    : '<strong>✗ Incorrect.</strong> '+FEEDBACK[key].w;
+  if(isCorrect) {
+    card.classList.add('correct');
+    numEl.classList.add('correct-num');
+    scores.mc[mod]++;
+  } else {
+    card.classList.add('incorrect');
+    numEl.classList.add('incorrect-num');
+  }
+  card.classList.add('answered');
+  updateModuleScore(mod);
+  updateProgress();
+}
+
+function submitShort(mod, qi) {
+  const key = mod+'-'+qi;
+  if(saAnswered[key]) return;
+  const ta = document.getElementById('sa-'+mod+'-'+qi);
+  const val = ta.value.trim();
+  if(!val) { alert('Please write an answer before submitting.'); return; }
+  saAnswered[key] = val;
+  ta.disabled = true;
+  const card = document.getElementById('qcard-'+mod+'-'+qi);
+  const numEl = document.getElementById('qnum-'+mod+'-'+qi);
+  const fb = document.getElementById('fb-'+mod+'-'+qi);
+  const btn = ta.closest('.question-card').querySelector('.submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitted';
+  fb.className = 'feedback show info-fb';
+  fb.innerHTML = '<strong>Answer recorded.</strong> Short answers are reviewed by RLS staff. Compare your response to the model answer below:<div class="model-answer">'+FEEDBACK[key].ma+'</div>';
+  card.classList.add('answered');
+  numEl.classList.add('correct-num');
+  scores.sa[mod]++;
+  updateModuleScore(mod);
+  updateProgress();
+}
+
+function updateModuleScore(mod) {
+  const mcDone = Object.keys(answered).filter(k=>k.startsWith(mod+'-')).length;
+  const saDone = Object.keys(saAnswered).filter(k=>k.startsWith(mod+'-')).length;
+  const total = MODULE_Q_COUNTS[mod];
+  const done = mcDone + saDone;
+  const el = document.getElementById('score-'+mod);
+  if(el) {
+    const mcScore = scores.mc[mod];
+    const saScore = scores.sa[mod];
+    if(done > 0) el.textContent = 'Score: '+(mcScore+saScore)+'/'+done+' answered';
+  }
+}
+
+function updateProgress() {
+  const totalQ = MODULE_Q_COUNTS.reduce((a,b)=>a+b,0);
+  const totalDone = Object.keys(answered).length + Object.keys(saAnswered).length;
+  const pct = Math.round(totalDone/totalQ*100);
+  document.getElementById('progress-fill').style.width = pct+'%';
+  document.getElementById('progress-pct').textContent = pct+'% complete';
+  document.getElementById('progress-label').textContent = 'Module '+(currentMod+1)+' of 5';
+}
+
+function goModule(idx) {
+  document.querySelectorAll('.module-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.mod-tab').forEach((t,i)=>{
+    t.classList.remove('active');
+    const mcDone = Object.keys(answered).filter(k=>k.startsWith(i+'-')).length;
+    const saDone = Object.keys(saAnswered).filter(k=>k.startsWith(i+'-')).length;
+    if(mcDone+saDone > 0) t.classList.add('completed');
+  });
+  document.getElementById('mod-'+idx).classList.add('active');
+  document.getElementById('tab-'+idx).classList.add('active');
+  currentMod = idx;
+  updateProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showResults() {
+  document.querySelectorAll('.module-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('results-screen').classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  let totalCorrect = 0, totalQ = 0;
+  const rows = [];
+  for(let m=0;m<5;m++){
+    const mc = scores.mc[m], sa = scores.sa[m];
+    const correct = mc+sa;
+    const total = MODULE_Q_COUNTS[m];
+    const done = Object.keys(answered).filter(k=>k.startsWith(m+'-')).length
+               + Object.keys(saAnswered).filter(k=>k.startsWith(m+'-')).length;
+    const pct = done>0 ? Math.round(correct/done*100) : 0;
+    totalCorrect += correct; totalQ += done;
+    const colorClass = pct >= 75 ? '' : (pct >= 50 ? 'mid' : 'low');
+    rows.push(`<div class="breakdown-row">
+      <span class="bd-name">${MODULE_NAMES[m]}</span>
+      <div class="bd-bar-wrap"><div class="bd-bar ${colorClass}" style="width:${pct}%"></div></div>
+      <span class="bd-score">${correct}/${done}</span>
+    </div>`);
+  }
+  document.getElementById('breakdown-rows').innerHTML = rows.join('');
+
+  const overallPct = totalQ>0 ? Math.round(totalCorrect/totalQ*100) : 0;
+  document.getElementById('final-ring').textContent = overallPct+'%';
+  const pass = parseInt(getConfig('cfg-pass','75'));
+  if(overallPct >= pass) {
+    document.getElementById('results-title').textContent = 'Well done! You passed.';
+    document.getElementById('results-subtitle').textContent = `You scored ${totalCorrect}/${totalQ} (${overallPct}%). You\'re ready to discuss your first field survey with RLS.`;
+  } else {
+    document.getElementById('results-title').textContent = 'Keep studying — not quite there yet.';
+    document.getElementById('results-subtitle').textContent = `You scored ${totalCorrect}/${totalQ} (${overallPct}%). Review the modules where you lost marks and try again.`;
+  }
+}
+
+function submitToRLS() {
+  const first = document.getElementById('diver-first').value.trim();
+  const last = document.getElementById('diver-last').value.trim();
+  const email = document.getElementById('diver-email').value.trim();
+  if(!first||!last||!email){ alert('Please fill in your name and email.'); return; }
+
+  const totalCorrect = [0,1,2,3,4].reduce((s,m)=>s+scores.mc[m]+scores.sa[m],0);
+  const totalQ = Object.keys(answered).length + Object.keys(saAnswered).length;
+  const pct = totalQ>0 ? Math.round(totalCorrect/totalQ*100) : 0;
+
+  const submission = {
+    name: first+' '+last,
+    email: email,
+    location: document.getElementById('diver-location').value,
+    experience: document.getElementById('diver-exp').value,
+    score: totalCorrect+'/'+totalQ+' ('+pct+'%)',
+    timestamp: new Date().toISOString(),
+    moduleScores: [0,1,2,3,4].map(m=>'M'+(m+1)+': '+(scores.mc[m]+scores.sa[m])+'/'+MODULE_Q_COUNTS[m]).join(', '),
+    shortAnswers: Object.entries(saAnswered).map(([k,v])=>'Q'+k+': '+v).join(' | ')
+  };
+
+  const existing = JSON.parse(localStorage.getItem('rls_quiz_submissions')||'[]');
+  existing.push(submission);
+  localStorage.setItem('rls_quiz_submissions', JSON.stringify(existing));
+  loadSubmissions();
+
+  const endpoint = getConfig('cfg-endpoint','');
+  if(endpoint) {
+    fetch(endpoint, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(submission)
+    }).catch(()=>{});
+  }
+
+  document.getElementById('submit-success').classList.add('show');
+  document.querySelector('.send-btn').disabled = true;
+}
+
+function restartQuiz() {
+  answered = {}; saAnswered = {};
+  scores = {mc:[0,0,0,0,0], sa:[0,0,0,0,0], mc_total:[6,6,6,6,5], sa_total:[1,1,1,1,2]};
+  document.getElementById('results-screen').classList.remove('show');
+  document.querySelectorAll('.option-btn').forEach(b=>{
+    b.disabled=false;
+    b.classList.remove('selected','correct-ans','wrong-ans');
+  });
+  document.querySelectorAll('.question-card').forEach(c=>c.classList.remove('answered','correct','incorrect'));
+  document.querySelectorAll('.q-number').forEach(n=>n.classList.remove('correct-num','incorrect-num'));
+  document.querySelectorAll('.feedback').forEach(f=>{f.className='feedback';f.innerHTML='';});
+  document.querySelectorAll('textarea').forEach(t=>{t.value='';t.disabled=false;});
+  document.querySelectorAll('.submit-btn').forEach(b=>{b.disabled=false;b.textContent='Submit answer';});
+  document.getElementById('submit-success').classList.remove('show');
+  document.querySelector('.send-btn').disabled = false;
+  document.querySelectorAll('.mod-tab').forEach(t=>t.classList.remove('completed'));
+  for(let i=0;i<5;i++) { const s=document.getElementById('score-'+i); if(s) s.textContent=''; }
+  goModule(0);
+}
+
+function toggleAdmin() {
+  document.getElementById('admin-panel').classList.toggle('open');
+  loadSubmissions();
+}
+
+function saveConfig() {
+  const cfg = {
+    endpoint: document.getElementById('cfg-endpoint').value,
+    email: document.getElementById('cfg-email').value,
+    title: document.getElementById('cfg-title').value,
+    pass: document.getElementById('cfg-pass').value,
+    password: document.getElementById('cfg-password').value
+  };
+  localStorage.setItem('rls_quiz_config', JSON.stringify(cfg));
+}
+
+function getConfig(id, def) {
+  try {
+    const cfg = JSON.parse(localStorage.getItem('rls_quiz_config')||'{}');
+    const el = document.getElementById(id);
+    if(el && el.value) return el.value;
+    return cfg[id.replace('cfg-','')] || def;
+  } catch(e){ return def; }
+}
+
+function loadSubmissions() {
+  const subs = JSON.parse(localStorage.getItem('rls_quiz_submissions')||'[]');
+  document.getElementById('sub-count').textContent = subs.length;
+  const list = document.getElementById('submissions-list');
+  if(!subs.length){ list.innerHTML='<p class="no-submissions">No submissions yet.</p>'; return; }
+  list.innerHTML = subs.slice().reverse().map(s=>`
+    <div class="submission-item">
+      <div class="si-name">${s.name}</div>
+      <div class="si-meta">${s.email} · ${s.location||'Location not specified'}</div>
+      <div class="si-meta">Experience: ${s.experience||'Not specified'} · ${new Date(s.timestamp).toLocaleDateString()}</div>
+      <div class="si-meta" style="font-size:0.74rem;margin-top:3px;">${s.moduleScores}</div>
+      <span class="si-score">${s.score}</span>
+    </div>`).join('');
+}
+
+function exportCSV() {
+  const subs = JSON.parse(localStorage.getItem('rls_quiz_submissions')||'[]');
+  if(!subs.length){ alert('No submissions to export.'); return; }
+  const headers = ['Name','Email','Location','Experience','Score','Module Scores','Date','Short Answers'];
+  const rows = subs.map(s=>[s.name,s.email,s.location||'',s.experience||'',s.score,s.moduleScores,s.timestamp,'"'+(s.shortAnswers||'').replace(/"/g,'""')+'"'].join(','));
+  const csv = [headers.join(','),...rows].join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download = 'rls_quiz_submissions_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+}
+
+function clearSubmissions() {
+  if(!confirm('Delete all stored submissions? This cannot be undone.')) return;
+  localStorage.removeItem('rls_quiz_submissions');
+  loadSubmissions();
+}
+
+(function init(){
+  const cfg = JSON.parse(localStorage.getItem('rls_quiz_config')||'{}');
+  if(cfg.endpoint) document.getElementById('cfg-endpoint').value = cfg.endpoint;
+  if(cfg.email) document.getElementById('cfg-email').value = cfg.email;
+  if(cfg.title) document.getElementById('cfg-title').value = cfg.title;
+  if(cfg.pass) document.getElementById('cfg-pass').value = cfg.pass;
+  updateProgress();
+})();
+</script>
+</body>
+</html>
