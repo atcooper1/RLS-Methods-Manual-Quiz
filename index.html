@@ -1721,7 +1721,7 @@ function showResults() {
  
   const overallPct = totalQ>0 ? Math.round(totalCorrect/totalQ*100) : 0;
   document.getElementById('final-ring').textContent = overallPct+'%';
-  const pass = parseInt(getConfig('cfg-pass','75'));
+  const pass = parseInt(getConfig('cfg-pass','85'));
   if(overallPct >= pass) {
     document.getElementById('results-title').textContent = 'Well done! You passed.';
     document.getElementById('results-subtitle').textContent = `You scored ${totalCorrect}/${totalQ} (${overallPct}%). You\'re ready to discuss your first field survey with RLS.`;
