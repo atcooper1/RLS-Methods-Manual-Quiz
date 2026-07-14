@@ -1554,32 +1554,8 @@
   </div>
  
   <div class="submit-results">
-    <h3>Submit your results to RLS</h3>
-    <p>Enter your details below so RLS can record your pre-training assessment and follow up if needed.</p>
-    <div class="form-grid">
-      <div class="form-row">
-        <label>First name *</label>
-        <input type="text" id="diver-first" placeholder="e.g. Jane">
-      </div>
-      <div class="form-row">
-        <label>Last name *</label>
-        <input type="text" id="diver-last" placeholder="e.g. Smith">
-      </div>
-    </div>
-    <div class="form-row">
-      <label>Email address *</label>
-      <input type="email" id="diver-email" placeholder="your@email.com">
-    </div>
-    <div class="form-grid">
-      <div class="form-row">
-        <label>State / Country</label>
-        <input type="text" id="diver-location" placeholder="e.g. Tasmania, AUS">
-      </div>
-      
-    </div>
-    <button class="send-btn" onclick="submitToRLS()">Submit results to RLS HQ</button>
-    <div class="submission-success" id="submit-success">
-      ✓ Results submitted! RLS will review your assessment and be in touch before your first field survey.
+    <div class="submission-success show" id="submit-success">
+      ✓ Your results have been automatically recorded and sent to RLS HQ. We'll be in touch before your first field survey.
     </div>
   </div>
  
@@ -1818,21 +1794,20 @@ function showResults() {
   // Auto-record this attempt immediately
   autoSaveAttempt();
  
-  let totalCorrect = 0, totalQ = 0;
+  let totalCorrect = 0;
+  const totalQ = MODULE_Q_COUNTS.reduce((a,b)=>a+b,0); // always out of 35
   const rows = [];
   for(let m=0;m<5;m++){
     const mc = scores.mc[m], sa = scores.sa[m];
     const correct = mc+sa;
     const total = MODULE_Q_COUNTS[m];
-    const done = Object.keys(answered).filter(k=>k.startsWith(m+'-')).length
-               + Object.keys(saAnswered).filter(k=>k.startsWith(m+'-')).length;
-    const pct = done>0 ? Math.round(correct/done*100) : 0;
-    totalCorrect += correct; totalQ += done;
+    const pct = Math.round(correct/total*100); // per-module % out of total questions
+    totalCorrect += correct;
     const colorClass = pct >= 75 ? '' : (pct >= 50 ? 'mid' : 'low');
     rows.push(`<div class="breakdown-row">
       <span class="bd-name">${MODULE_NAMES[m]}</span>
       <div class="bd-bar-wrap"><div class="bd-bar ${colorClass}" style="width:${pct}%"></div></div>
-      <span class="bd-score">${correct}/${done}</span>
+      <span class="bd-score">${correct}/${total}</span>
     </div>`);
   }
   document.getElementById('breakdown-rows').innerHTML = rows.join('');
@@ -1870,8 +1845,8 @@ function buildSubmission(totalCorrect, totalQ, pct) {
 
 function autoSaveAttempt() {
   const totalCorrect = [0,1,2,3,4].reduce((s,m)=>s+scores.mc[m]+scores.sa[m],0);
-  const totalQ = Object.keys(answered).length + Object.keys(saAnswered).length;
-  const pct = totalQ > 0 ? Math.round(totalCorrect/totalQ*100) : 0;
+  const totalQ = MODULE_Q_COUNTS.reduce((a,b)=>a+b,0); // always out of 35
+  const pct = Math.round(totalCorrect/totalQ*100);
   const submission = buildSubmission(totalCorrect, totalQ, pct);
 
   // Save locally
