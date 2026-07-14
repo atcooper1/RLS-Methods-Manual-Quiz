@@ -675,9 +675,113 @@
     .admin-panel { width: 100%; }
     .module-nav-inner { padding: 0 1rem; }
   }
+
+  /* ── REGISTRATION GATE ── */
+  .reg-overlay {
+    position: fixed; inset: 0;
+    background: rgba(4,44,83,0.85);
+    z-index: 500;
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.5rem;
+  }
+  .reg-overlay.hidden { display: none; }
+  .reg-modal {
+    background: #fff;
+    border-radius: 14px;
+    padding: 2.5rem 2rem;
+    max-width: 440px; width: 100%;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+  }
+  .reg-modal .rls-logo-sm {
+    font-size: 2rem; text-align: center; margin-bottom: 0.75rem;
+  }
+  .reg-modal h2 {
+    font-size: 1.25rem; font-weight: 700;
+    color: var(--ocean-deep); text-align: center;
+    margin-bottom: 0.4rem;
+  }
+  .reg-modal .reg-sub {
+    font-size: 0.85rem; color: var(--text-secondary);
+    text-align: center; margin-bottom: 1.75rem; line-height: 1.5;
+  }
+  .reg-modal .form-row { margin-bottom: 0.9rem; }
+  .reg-modal .form-row label {
+    display: block; font-size: 0.78rem; font-weight: 600;
+    color: var(--text-secondary); margin-bottom: 4px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .reg-modal .form-row input,
+  .reg-modal .form-row select {
+    width: 100%; padding: 0.65rem 0.9rem;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    font-size: 0.9rem; font-family: inherit;
+    color: var(--text-primary);
+    transition: border-color 0.2s;
+  }
+  .reg-modal .form-row input:focus,
+  .reg-modal .form-row select:focus {
+    outline: none; border-color: var(--ocean-bright);
+  }
+  .reg-modal .form-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
+  }
+  .reg-start-btn {
+    width: 100%; padding: 0.85rem;
+    background: var(--ocean-deep); color: #fff;
+    border: none; border-radius: var(--radius-sm);
+    font-size: 0.95rem; font-weight: 700;
+    cursor: pointer; margin-top: 0.5rem;
+    transition: background 0.2s;
+  }
+  .reg-start-btn:hover { background: var(--ocean-mid); }
+  .reg-error {
+    color: var(--danger); font-size: 0.82rem;
+    margin-top: 0.5rem; display: none; text-align: center;
+  }
+  .reg-error.show { display: block; }
+  .attempt-badge {
+    display: inline-block;
+    background: var(--ocean-light); color: var(--ocean-deep);
+    font-size: 0.78rem; font-weight: 600;
+    padding: 3px 10px; border-radius: 12px;
+    margin-left: 8px; vertical-align: middle;
+  }
+
 </style>
 </head>
 <body>
+
+<!-- REGISTRATION GATE -->
+<div class="reg-overlay" id="reg-overlay">
+  <div class="reg-modal">
+    <div class="rls-logo-sm">🐠</div>
+    <h2>RLS Methods Training Quiz</h2>
+    <p class="reg-sub">Please enter your details before starting.<br>Your results will be sent to RLS HQ after each attempt.</p>
+    <div class="form-grid">
+      <div class="form-row">
+        <label>First name *</label>
+        <input type="text" id="reg-first" placeholder="Jane" autocomplete="given-name">
+      </div>
+      <div class="form-row">
+        <label>Last name *</label>
+        <input type="text" id="reg-last" placeholder="Smith" autocomplete="family-name">
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Email address *</label>
+      <input type="email" id="reg-email" placeholder="your@email.com" autocomplete="email">
+    </div>
+    <div class="form-row">
+      <label>State / Country</label>
+      <input type="text" id="reg-location" placeholder="e.g. Tasmania, AUS">
+    </div>
+
+    <button class="reg-start-btn" onclick="startQuiz()">Start quiz →</button>
+    <div class="reg-error" id="reg-error">Please fill in your name and email to continue.</div>
+  </div>
+</div>
+
  
 <!-- HEADER -->
 <header class="site-header">
@@ -1471,16 +1575,7 @@
         <label>State / Country</label>
         <input type="text" id="diver-location" placeholder="e.g. Tasmania, AUS">
       </div>
-      <div class="form-row">
-        <label>Dive experience</label>
-        <select id="diver-exp">
-          <option value="">Select…</option>
-          <option>< 50 dives</option>
-          <option>50–200 dives</option>
-          <option>200–500 dives</option>
-          <option>> 500 dives</option>
-        </select>
-      </div>
+      
     </div>
     <button class="send-btn" onclick="submitToRLS()">Submit results to RLS HQ</button>
     <div class="submission-success" id="submit-success">
@@ -1507,7 +1602,7 @@
     <div class="admin-section">
       <h4>RLS HQ Settings</h4>
       <div class="rls-hq-config">
-        <p>To receive results by email, configure a form endpoint below. Use a free service like <strong>Formspree</strong> (<code>formspree.io</code>) or <strong>Web3Forms</strong> and paste your endpoint URL here. Alternatively, results are always stored locally and exportable as CSV.</p>
+        <p>To receive results by email at <strong>reeflife.survey@utas.edu.au</strong>, set up a free <strong>Formspree</strong> account at <code>formspree.io</code> — register with your RLS email, create a new form, and paste the endpoint URL (e.g. <code>https://formspree.io/f/xxxxx</code>) below. Every quiz attempt will then be emailed to you automatically. Results are also always stored locally and exportable as CSV.</p>
       </div>
       <div class="admin-field">
         <label>Form endpoint URL (optional)</label>
@@ -1515,7 +1610,7 @@
       </div>
       <div class="admin-field">
         <label>RLS HQ Email (displayed on confirmation)</label>
-        <input type="text" id="cfg-email" value="enquiries@reeflifesurvey.com" oninput="saveConfig()">
+        <input type="text" id="cfg-email" value="reeflife.survey@utas.edu.au" oninput="saveConfig()">
       </div>
     </div>
  
@@ -1527,7 +1622,7 @@
       </div>
       <div class="admin-field">
         <label>Pass mark (%)</label>
-        <input type="number" id="cfg-pass" value="75" min="0" max="100" oninput="saveConfig()">
+        <input type="number" id="cfg-pass" value="80" min="0" max="100" oninput="saveConfig()">
       </div>
       <div class="admin-field">
         <label>Admin password</label>
@@ -1601,6 +1696,27 @@ let scores = {mc:[0,0,0,0,0], sa:[0,0,0,0,0], mc_total:[6,6,6,6,5], sa_total:[1,
 let answered = {};
 let saAnswered = {};
 let currentMod = 0;
+let diverInfo = {first:'', last:'', email:'', location:'', experience:'', attempt:'1'};
+
+function startQuiz() {
+  const first = document.getElementById('reg-first').value.trim();
+  const last  = document.getElementById('reg-last').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const errEl = document.getElementById('reg-error');
+  if(!first || !last || !email) {
+    errEl.classList.add('show');
+    return;
+  }
+  errEl.classList.remove('show');
+  diverInfo = {
+    first, last, email,
+    location:   document.getElementById('reg-location').value.trim(),
+    experience: '',
+    attempt:    '1' // placeholder, recalculated in autoSaveAttempt
+  };
+  document.getElementById('reg-overlay').classList.add('hidden');
+  updateProgress();
+}
  
 function selectOption(btn, mod, qi, letter) {
   const key = mod+'-'+qi;
@@ -1699,6 +1815,8 @@ function showResults() {
   document.querySelectorAll('.module-section').forEach(s=>s.classList.remove('active'));
   document.getElementById('results-screen').classList.add('show');
   window.scrollTo({top:0,behavior:'smooth'});
+  // Auto-record this attempt immediately
+  autoSaveAttempt();
  
   let totalCorrect = 0, totalQ = 0;
   const rows = [];
@@ -1721,7 +1839,7 @@ function showResults() {
  
   const overallPct = totalQ>0 ? Math.round(totalCorrect/totalQ*100) : 0;
   document.getElementById('final-ring').textContent = overallPct+'%';
-  const pass = parseInt(getConfig('cfg-pass','85'));
+  const pass = parseInt(getConfig('cfg-pass','80'));
   if(overallPct >= pass) {
     document.getElementById('results-title').textContent = 'Well done! You passed.';
     document.getElementById('results-subtitle').textContent = `You scored ${totalCorrect}/${totalQ} (${overallPct}%). You\'re ready to discuss your first field survey with RLS.`;
@@ -1731,6 +1849,56 @@ function showResults() {
   }
 }
  
+function buildSubmission(totalCorrect, totalQ, pct) {
+  // Auto-calculate attempt number from prior submissions with same email
+  const allSubs = JSON.parse(localStorage.getItem('rls_quiz_submissions')||'[]');
+  const priorAttempts = allSubs.filter(s => s.email === diverInfo.email).length;
+  const attemptNum = priorAttempts + 1;
+  return {
+    name:         diverInfo.first + ' ' + diverInfo.last,
+    email:        diverInfo.email,
+    location:     diverInfo.location,
+    experience:   diverInfo.experience,
+    attempt:      attemptNum,
+    score:        totalCorrect + '/' + totalQ + ' (' + pct + '%)',
+    passed:       pct >= parseInt(getConfig('cfg-pass','80')) ? 'Yes' : 'No',
+    timestamp:    new Date().toISOString(),
+    moduleScores: [0,1,2,3,4].map(m=>'M'+(m+1)+': '+(scores.mc[m]+scores.sa[m])+'/'+MODULE_Q_COUNTS[m]).join(', '),
+    shortAnswers: Object.entries(saAnswered).map(([k,v])=>'Q'+k+': '+v).join(' | ')
+  };
+}
+
+function autoSaveAttempt() {
+  const totalCorrect = [0,1,2,3,4].reduce((s,m)=>s+scores.mc[m]+scores.sa[m],0);
+  const totalQ = Object.keys(answered).length + Object.keys(saAnswered).length;
+  const pct = totalQ > 0 ? Math.round(totalCorrect/totalQ*100) : 0;
+  const submission = buildSubmission(totalCorrect, totalQ, pct);
+
+  // Save locally
+  const existing = JSON.parse(localStorage.getItem('rls_quiz_submissions')||'[]');
+  existing.push(submission);
+  localStorage.setItem('rls_quiz_submissions', JSON.stringify(existing));
+  loadSubmissions();
+
+  // Send to endpoint if configured
+  const endpoint = getConfig('cfg-endpoint','');
+  if(endpoint) {
+    fetch(endpoint, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(submission)}).catch(()=>{});
+  }
+
+  // Update results screen with diver name and attempt
+  const passThreshold = parseInt(getConfig('cfg-pass','80'));
+  const passed = pct >= passThreshold;
+  document.getElementById('final-ring').textContent = pct + '%';
+  document.getElementById('final-ring').style.borderColor = passed ? 'var(--teal-accent)' : 'rgba(255,255,255,0.3)';
+  document.getElementById('results-title').textContent = passed
+    ? 'Well done ' + diverInfo.first + '! You passed.'
+    : 'Not quite there, ' + diverInfo.first + ' — keep studying.';
+  document.getElementById('results-subtitle').textContent = passed
+    ? 'You scored ' + totalCorrect + '/' + totalQ + ' (' + pct + '%). Your results have been sent to RLS.'
+    : 'You scored ' + totalCorrect + '/' + totalQ + ' (' + pct + '%). Review the modules where you lost marks and try again. Your attempt has been recorded.';
+}
+
 function submitToRLS() {
   const first = document.getElementById('diver-first').value.trim();
   const last = document.getElementById('diver-last').value.trim();
@@ -1745,7 +1913,6 @@ function submitToRLS() {
     name: first+' '+last,
     email: email,
     location: document.getElementById('diver-location').value,
-    experience: document.getElementById('diver-exp').value,
     score: totalCorrect+'/'+totalQ+' ('+pct+'%)',
     timestamp: new Date().toISOString(),
     moduleScores: [0,1,2,3,4].map(m=>'M'+(m+1)+': '+(scores.mc[m]+scores.sa[m])+'/'+MODULE_Q_COUNTS[m]).join(', '),
@@ -1770,6 +1937,13 @@ function submitToRLS() {
 }
  
 function restartQuiz() {
+  // Show registration again for new attempt (pre-fill name/email, increment attempt)
+  document.getElementById('reg-first').value = diverInfo.first;
+  document.getElementById('reg-last').value = diverInfo.last;
+  document.getElementById('reg-email').value = diverInfo.email;
+  document.getElementById('reg-location').value = diverInfo.location;
+  document.getElementById('results-screen').classList.remove('show');
+  document.getElementById('reg-overlay').classList.remove('hidden');
   answered = {}; saAnswered = {};
   scores = {mc:[0,0,0,0,0], sa:[0,0,0,0,0], mc_total:[6,6,6,6,5], sa_total:[1,1,1,1,2]};
   document.getElementById('results-screen').classList.remove('show');
