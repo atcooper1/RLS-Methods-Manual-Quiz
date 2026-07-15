@@ -1582,7 +1582,7 @@
       </div>
       <div class="admin-field">
         <label>Form endpoint URL (optional)</label>
-        <input type="text" id="cfg-endpoint" placeholder="https://formspree.io/f/YOUR_ID" oninput="saveConfig()">
+        <input type="text" id="cfg-endpoint" placeholder="https://formspree.io/f/YOUR_ID" value="https://formspree.io/f/xgogvrlw" oninput="saveConfig()">
       </div>
       <div class="admin-field">
         <label>RLS HQ Email (displayed on confirmation)</label>
@@ -1743,7 +1743,7 @@ function submitShort(mod, qi) {
   btn.disabled = true;
   btn.textContent = 'Submitted';
   fb.className = 'feedback show info-fb';
-  fb.innerHTML = '<strong>Answer recorded.</strong> Short answers are reviewed by RLS HQ. Compare your response to the model answer below:<div class="model-answer">'+FEEDBACK[key].ma+'</div>';
+  fb.innerHTML = '<strong>Answer recorded.</strong> Short answers are reviewed by RLS staff. Compare your response to the model answer below:<div class="model-answer">'+FEEDBACK[key].ma+'</div>';
   card.classList.add('answered');
   numEl.classList.add('correct-num');
   scores.sa[mod]++;
@@ -1856,11 +1856,12 @@ function autoSaveAttempt() {
   localStorage.setItem('rls_quiz_submissions', JSON.stringify(existing));
   loadSubmissions();
 
-  // Send to endpoint if configured
-  const endpoint = getConfig('cfg-endpoint','');
-  if(endpoint) {
-    fetch(endpoint, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(submission)}).catch(()=>{});
-  }
+  // Send to Formspree
+  const FORMSPREE_URL = 'https://formspree.io/f/xgogvrlw';
+  fetch(FORMSPREE_URL, {method:'POST', headers:{'Content-Type':'application/json', 'Accept':'application/json'}, body: JSON.stringify(submission)})
+    .then(r => r.json())
+    .then(d => { if(d.ok) console.log('Submission sent to RLS'); })
+    .catch(e => console.warn('Submission error:', e));
 
   // Update results screen with diver name and attempt
   const passThreshold = parseInt(getConfig('cfg-pass','80'));
@@ -1900,13 +1901,7 @@ function submitToRLS() {
   localStorage.setItem('rls_quiz_submissions', JSON.stringify(existing));
   loadSubmissions();
  
-  const endpoint = getConfig('cfg-endpoint','');
-  if(endpoint) {
-    fetch(endpoint, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(submission)
-    }).catch(()=>{});
-  }
+  // Submission already sent via autoSaveAttempt()
  
   document.getElementById('submit-success').classList.add('show');
   document.querySelector('.send-btn').disabled = true;
