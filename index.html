@@ -953,7 +953,26 @@
     <div class="feedback" id="fb-0-6"></div>
   </div>
  
-  <div class="module-actions">
+  <div class="modul
+  <!-- Q8 -->
+  <div class="question-card" id="qcard-0-7">
+    <div class="q-header">
+      <div class="q-number" id="qnum-0-7">8</div>
+      <div class="q-meta">
+        <span class="q-tag site">Site Setup</span>
+        <p class="q-text">You have just surveyed a site with 4 other divers. One diver shared your transect, and the other two shared a second transect at a similar depth to yours. What should you do immediately after finishing the dive?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,0,7,'A')"><span class="opt-letter">A</span>Check that all four divers have recorded the same site name, date, and depth on their datasheets</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,7,'B')"><span class="opt-letter">B</span>Confirm your metadata is correct — same depth as your buddy, but a different depth to the divers on the second transect, and that site name and date match across all four datasheets</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,7,'C')"><span class="opt-letter">C</span>Submit your data immediately before memory fades, and check metadata later</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,0,7,'D')"><span class="opt-letter">D</span>Only check metadata if the two transects were at exactly the same depth</button></li>
+    </ul>
+    <div class="feedback" id="fb-0-7"></div>
+  </div>
+
+e-actions">
     <button class="nav-btn" disabled>← Previous</button>
     <span class="module-score" id="score-0"></span>
     <button class="nav-btn primary" onclick="goModule(1)">Next module →</button>
@@ -1389,7 +1408,26 @@
   </div>
  
   <div class="module-actions">
-    <button class="nav-btn" onclick="goModule(2)">← Previous</button>
+ 
+  <!-- Q29 -->
+  <div class="question-card" id="qcard-3-7">
+    <div class="q-header">
+      <div class="q-number" id="qnum-3-7">29</div>
+      <div class="q-meta">
+        <span class="q-tag data">Data Submission</span>
+        <p class="q-text">After completing a survey, when should you submit your data to RLS?</p>
+      </div>
+    </div>
+    <ul class="options-list">
+      <li><button class="option-btn" onclick="selectOption(this,3,7,'A')"><span class="opt-letter">A</span>Within one month — there is no rush as long as it arrives eventually</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,7,'B')"><span class="opt-letter">B</span>Within one week of completing the survey, or if on a trip, by the last day of the trip</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,7,'C')"><span class="opt-letter">C</span>Immediately after the dive, before leaving the water</button></li>
+      <li><button class="option-btn" onclick="selectOption(this,3,7,'D')"><span class="opt-letter">D</span>Whenever convenient — data quality is more important than submission timing</button></li>
+    </ul>
+    <div class="feedback" id="fb-3-7"></div>
+  </div>
+
+   <button class="nav-btn" onclick="goModule(2)">← Previous</button>
     <span class="module-score" id="score-3"></span>
     <button class="nav-btn primary" onclick="goModule(4)">Next module →</button>
   </div>
@@ -1625,10 +1663,13 @@ const ANSWERS = {
   '1-0': 'B', '1-1': 'C', '1-2': 'B', '1-3': 'B', '1-4': 'C', '1-5': 'C',
   '2-0': 'B', '2-1': 'C', '2-2': 'B', '2-3': 'C', '2-4': 'B', '2-5': 'B',
   '3-0': 'B', '3-1': 'B', '3-2': 'C', '3-3': 'B', '3-4': 'B', '3-5': 'C',
+  '0-7': 'B', '3-7': 'B',
   '4-0': 'B', '4-1': 'B', '4-2': 'B', '4-3': 'A', '4-4': 'C','4-6': 'C'
 };
  
 const FEEDBACK = {
+  '0-7': {c:'Correct! This is critical — buddy pairs must share the same depth, but different transects at the same site must have different depths in the database. This is especially important at sites with multiple transects or where depth variation is small.', w:'The key check is that you and your buddy recorded the SAME depth, but a DIFFERENT depth to the other pair. All four datasheets should share the same site name and date. If two pairs accidentally record the same depth, the database cannot distinguish their transects.'},
+  '3-7': {c:'Correct! Data should be submitted within one week of the survey, or by the last day of a trip. The sooner the better — data entry while memory is fresh reduces errors.', w:'RLS asks that data be submitted within one week of completing the survey. If you are on a multi-day trip, submit by the last day of the trip. Delaying risks transcription errors and data loss.'},
   '0-0': {c:'Correct! The standard RLS transect line is 50 m long.', w:'The standard RLS transect is exactly 50 m long — this is consistent across all surveys worldwide.'},
   '0-1': {c:'Correct! Method 1 targets fish, Method 2 targets invertebrates & cryptic fish, and Photo-quadrats (PQ) cover sessile biota and seaweeds.', w:'The three methods are: M1 (fish), M2 (invertebrates & cryptic fish), and Photo-quadrats (PQs for corals and algae). Each targets a different taxonomic group along the same 50 m line.'},
   '0-2': {c:'Correct! Fishing gear and plastic are the two manufactured debris categories included in the Method 2 search — one item of debris = 1 in the total column.', w:'Fishing gear (code: def) and plastic (code: dep) are the only two categories. Debris is counted during the Method 2 search only — not M1 or at any other time.'},
@@ -1667,7 +1708,7 @@ const FEEDBACK = {
 };
  
 const MODULE_NAMES = ['Survey Basics','Fish Survey (M1)','Invertebrate Survey (M2)','Photo-Quadrats & Data','Special Circumstances'];
-const MODULE_Q_COUNTS = [7, 7, 7, 7, 7];
+const MODULE_Q_COUNTS = [8, 7, 7, 8, 7];
  
 let scores = {mc:[0,0,0,0,0], sa:[0,0,0,0,0], mc_total:[6,6,6,6,5], sa_total:[1,1,1,1,2]};
 let answered = {};
