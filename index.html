@@ -786,7 +786,7 @@
 <!-- HEADER -->
 <header class="site-header">
   <div class="header-inner">
-    <div class="rls-logo">🐠</div>
+    <div class="rls-logo" onclick="logoClick()" style="cursor:default">🐠</div>
     <div class="header-text">
       <h1>RLS Methods Training Quiz</h1>
       <p>Pre-dive certification assessment for volunteer surveyors · Reef Life Survey</p>
@@ -1565,7 +1565,7 @@
 </main>
  
 <!-- ADMIN TOGGLE -->
-<button class="admin-toggle" onclick="toggleAdmin()" title="Admin panel" aria-label="Open admin panel">⚙</button>
+<button class="admin-toggle" id="admin-toggle-btn" onclick="toggleAdmin()" title="Admin panel" aria-label="Open admin panel" style="display:none">⚙</button>
  
 <!-- ADMIN PANEL -->
 <div class="admin-panel" id="admin-panel">
@@ -1602,7 +1602,8 @@
       </div>
       <div class="admin-field">
         <label>Admin password</label>
-        <input type="password" id="cfg-password" placeholder="Set a password for this panel" oninput="saveConfig()">
+        <input type="password" id="cfg-password" placeholder="Set a password then close the panel" oninput="saveConfig()">
+        <p style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Click the 🐠 logo 5 times rapidly to reveal the admin button., then your password. Set a password before sharing the quiz publicly.</p>
       </div>
     </div>
  
@@ -1742,7 +1743,7 @@ function submitShort(mod, qi) {
   btn.disabled = true;
   btn.textContent = 'Submitted';
   fb.className = 'feedback show info-fb';
-  fb.innerHTML = '<strong>Answer recorded.</strong> Short answers are reviewed by RLS staff. Compare your response to the model answer below:<div class="model-answer">'+FEEDBACK[key].ma+'</div>';
+  fb.innerHTML = '<strong>Answer recorded.</strong> Short answers are reviewed by RLS HQ. Compare your response to the model answer below:<div class="model-answer">'+FEEDBACK[key].ma+'</div>';
   card.classList.add('answered');
   numEl.classList.add('correct-num');
   scores.sa[mod]++;
@@ -1939,7 +1940,23 @@ function restartQuiz() {
 }
  
 function toggleAdmin() {
-  document.getElementById('admin-panel').classList.toggle('open');
+  const panel = document.getElementById('admin-panel');
+  if(panel.classList.contains('open')) {
+    panel.classList.remove('open');
+    return;
+  }
+  // Check if a password is set in config
+  const cfg = JSON.parse(localStorage.getItem('rls_quiz_config')||'{}');
+  const savedPw = cfg.password || '';
+  if(savedPw) {
+    const entered = prompt('Enter admin password:');
+    if(entered === null) return; // cancelled
+    if(entered !== savedPw) {
+      alert('Incorrect password.');
+      return;
+    }
+  }
+  panel.classList.add('open');
   loadSubmissions();
 }
  
@@ -1996,6 +2013,19 @@ function clearSubmissions() {
   loadSubmissions();
 }
  
+// 5 rapid clicks on the RLS logo reveals the admin button
+let logoClickCount = 0, logoClickTimer = null;
+function logoClick() {
+  logoClickCount++;
+  clearTimeout(logoClickTimer);
+  logoClickTimer = setTimeout(() => { logoClickCount = 0; }, 1500);
+  if(logoClickCount >= 5) {
+    logoClickCount = 0;
+    const btn = document.getElementById('admin-toggle-btn');
+    if(btn) btn.style.display = btn.style.display === 'none' ? 'flex' : 'none';
+  }
+}
+
 (function init(){
   const cfg = JSON.parse(localStorage.getItem('rls_quiz_config')||'{}');
   if(cfg.endpoint) document.getElementById('cfg-endpoint').value = cfg.endpoint;
