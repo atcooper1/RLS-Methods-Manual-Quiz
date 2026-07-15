@@ -1743,7 +1743,7 @@ function submitShort(mod, qi) {
   btn.disabled = true;
   btn.textContent = 'Submitted';
   fb.className = 'feedback show info-fb';
-  fb.innerHTML = '<strong>Answer recorded.</strong> Short answers are reviewed by RLS staff. Compare your response to the model answer below:<div class="model-answer">'+FEEDBACK[key].ma+'</div>';
+  fb.innerHTML = '<strong>Answer recorded.</strong> Short answers are reviewed by RLS HQ. Compare your response to the model answer below:<div class="model-answer">'+FEEDBACK[key].ma+'</div>';
   card.classList.add('answered');
   numEl.classList.add('correct-num');
   scores.sa[mod]++;
